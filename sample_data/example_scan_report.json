@@ -1,0 +1,1384 @@
+{
+  "scan_id": "afcdbbea-87a0-4572-b9b0-82ff0f724e63",
+  "started_at": "2026-08-07T05:22:51.870673+00:00",
+  "completed_at": "2026-08-07T05:22:52.683155+00:00",
+  "duration_seconds": 0.812,
+  "mode": "demo",
+  "findings": [
+    {
+      "id": "7e83f8f3-e01d-4ebc-930a-3549f16eb463",
+      "fingerprint": "55c69c2a29681c70",
+      "check_id": "S3_PUBLIC_READ",
+      "title": "S3 bucket allows public read access",
+      "description": "Bucket 'prod-app-logs-2024' grants READ or FULL_CONTROL to the AllUsers group. Any object in this bucket can be read anonymously over the internet.",
+      "severity": "high",
+      "severity_weight": 9,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::prod-app-logs-2024",
+      "resource_name": "prod-app-logs-2024",
+      "region": "us-east-1",
+      "remediation": "Remove public READ grants unless the bucket is intentionally hosting public content (e.g. a static website). Enable S3 Block Public Access.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": false,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.1",
+          "control_title": "Ensure S3 buckets are not publicly accessible"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.008934+00:00"
+    },
+    {
+      "id": "910fa6b7-149f-4560-8c85-66baf953ffc8",
+      "fingerprint": "41d1e2bf776a5cc9",
+      "check_id": "S3_NO_ENCRYPTION",
+      "title": "S3 bucket does not enforce server-side encryption",
+      "description": "Bucket 'prod-app-logs-2024' has no default server-side encryption configuration (SSE-S3 or SSE-KMS).",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::prod-app-logs-2024",
+      "resource_name": "prod-app-logs-2024",
+      "region": "us-east-1",
+      "remediation": "Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": false,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.2",
+          "control_title": "Ensure S3 buckets have server-side encryption enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.008984+00:00"
+    },
+    {
+      "id": "2095fba6-a389-40c1-93ee-e2c846219a98",
+      "fingerprint": "f5d72d4fa803519e",
+      "check_id": "S3_NO_VERSIONING",
+      "title": "S3 bucket versioning is disabled",
+      "description": "Bucket 'prod-app-logs-2024' does not have versioning enabled, increasing risk of unrecoverable data loss from accidental deletion or overwrite.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::prod-app-logs-2024",
+      "resource_name": "prod-app-logs-2024",
+      "region": "us-east-1",
+      "remediation": "Enable versioning via PutBucketVersioning, and consider adding an MFA Delete requirement for critical buckets.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": false,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.3",
+          "control_title": "Ensure S3 bucket versioning is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.008998+00:00"
+    },
+    {
+      "id": "b34d91ce-9817-4a30-afaf-b5ac71b7072a",
+      "fingerprint": "75962297dfc9290a",
+      "check_id": "S3_NO_LOGGING",
+      "title": "S3 bucket access logging is disabled",
+      "description": "Bucket 'prod-app-logs-2024' does not have server access logging enabled, limiting forensic visibility into who accessed objects.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::prod-app-logs-2024",
+      "resource_name": "prod-app-logs-2024",
+      "region": "us-east-1",
+      "remediation": "Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": false,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.4",
+          "control_title": "Ensure S3 bucket access logging is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009009+00:00"
+    },
+    {
+      "id": "aef42e26-c47f-4e72-b57e-677227cf23e6",
+      "fingerprint": "0012e1427f351276",
+      "check_id": "S3_BPA_DISABLED",
+      "title": "S3 Block Public Access is not fully enabled",
+      "description": "Bucket 'prod-app-logs-2024' does not have all four S3 Block Public Access settings enabled, leaving a gap that could allow future accidental exposure.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::prod-app-logs-2024",
+      "resource_name": "prod-app-logs-2024",
+      "region": "us-east-1",
+      "remediation": "Enable all four Block Public Access settings at the bucket level (and ideally at the account level as a guardrail).",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": false,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.5",
+          "control_title": "Ensure S3 Block Public Access is enabled at the bucket level"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009018+00:00"
+    },
+    {
+      "id": "021ea570-f18e-4f6b-81ac-33b9f0054b71",
+      "fingerprint": "da6c6360a2f4e1ba",
+      "check_id": "S3_NO_ENCRYPTION",
+      "title": "S3 bucket does not enforce server-side encryption",
+      "description": "Bucket 'customer-data-backup' has no default server-side encryption configuration (SSE-S3 or SSE-KMS).",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::customer-data-backup",
+      "resource_name": "customer-data-backup",
+      "region": "us-east-1",
+      "remediation": "Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": false,
+        "public_write": false,
+        "encryption": null,
+        "versioning": true,
+        "logging_enabled": true,
+        "block_public_access": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.2",
+          "control_title": "Ensure S3 buckets have server-side encryption enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009030+00:00"
+    },
+    {
+      "id": "c0f7262d-64a9-458e-a59d-df47fe8e6483",
+      "fingerprint": "53d06438eeb43793",
+      "check_id": "S3_NO_VERSIONING",
+      "title": "S3 bucket versioning is disabled",
+      "description": "Bucket 'static-website-assets' does not have versioning enabled, increasing risk of unrecoverable data loss from accidental deletion or overwrite.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::static-website-assets",
+      "resource_name": "static-website-assets",
+      "region": "us-west-2",
+      "remediation": "Enable versioning via PutBucketVersioning, and consider adding an MFA Delete requirement for critical buckets.",
+      "evidence": {
+        "region": "us-west-2",
+        "public_read": true,
+        "public_write": false,
+        "encryption": "AES256",
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false,
+        "intended_public": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.3",
+          "control_title": "Ensure S3 bucket versioning is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009041+00:00"
+    },
+    {
+      "id": "a81a0b80-ebbb-4a81-bcb7-e7d3a506649c",
+      "fingerprint": "b0b5c32fb6b41315",
+      "check_id": "S3_NO_LOGGING",
+      "title": "S3 bucket access logging is disabled",
+      "description": "Bucket 'static-website-assets' does not have server access logging enabled, limiting forensic visibility into who accessed objects.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::static-website-assets",
+      "resource_name": "static-website-assets",
+      "region": "us-west-2",
+      "remediation": "Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.",
+      "evidence": {
+        "region": "us-west-2",
+        "public_read": true,
+        "public_write": false,
+        "encryption": "AES256",
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false,
+        "intended_public": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.4",
+          "control_title": "Ensure S3 bucket access logging is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009049+00:00"
+    },
+    {
+      "id": "8497f2dd-707d-4d50-960f-a140afbb657b",
+      "fingerprint": "31f4dd7f791453fe",
+      "check_id": "S3_BPA_DISABLED",
+      "title": "S3 Block Public Access is not fully enabled",
+      "description": "Bucket 'static-website-assets' does not have all four S3 Block Public Access settings enabled, leaving a gap that could allow future accidental exposure.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::static-website-assets",
+      "resource_name": "static-website-assets",
+      "region": "us-west-2",
+      "remediation": "Enable all four Block Public Access settings at the bucket level (and ideally at the account level as a guardrail).",
+      "evidence": {
+        "region": "us-west-2",
+        "public_read": true,
+        "public_write": false,
+        "encryption": "AES256",
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false,
+        "intended_public": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.5",
+          "control_title": "Ensure S3 Block Public Access is enabled at the bucket level"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009057+00:00"
+    },
+    {
+      "id": "1dc16e20-f4b5-446c-87b2-3a0241f783bf",
+      "fingerprint": "3fee97974c05c69c",
+      "check_id": "S3_NO_ENCRYPTION",
+      "title": "S3 bucket does not enforce server-side encryption",
+      "description": "Bucket 'terraform-state-prod' has no default server-side encryption configuration (SSE-S3 or SSE-KMS).",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::terraform-state-prod",
+      "resource_name": "terraform-state-prod",
+      "region": "us-east-1",
+      "remediation": "Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": false,
+        "public_write": false,
+        "encryption": null,
+        "versioning": true,
+        "logging_enabled": false,
+        "block_public_access": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.2",
+          "control_title": "Ensure S3 buckets have server-side encryption enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009068+00:00"
+    },
+    {
+      "id": "a0ff1d7a-a806-46bd-86de-cf5e97a786f5",
+      "fingerprint": "98a91a822796ad06",
+      "check_id": "S3_NO_LOGGING",
+      "title": "S3 bucket access logging is disabled",
+      "description": "Bucket 'terraform-state-prod' does not have server access logging enabled, limiting forensic visibility into who accessed objects.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::terraform-state-prod",
+      "resource_name": "terraform-state-prod",
+      "region": "us-east-1",
+      "remediation": "Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": false,
+        "public_write": false,
+        "encryption": null,
+        "versioning": true,
+        "logging_enabled": false,
+        "block_public_access": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.4",
+          "control_title": "Ensure S3 bucket access logging is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009076+00:00"
+    },
+    {
+      "id": "768c7bc5-186a-4ff5-8945-43416cbaf418",
+      "fingerprint": "7c54b9957ac7c837",
+      "check_id": "S3_PUBLIC_WRITE",
+      "title": "S3 bucket allows public write access",
+      "description": "Bucket 'dev-uploads-scratch' grants WRITE or FULL_CONTROL to the AllUsers group, allowing anyone on the internet to upload, overwrite, or delete objects.",
+      "severity": "critical",
+      "severity_weight": 12,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::dev-uploads-scratch",
+      "resource_name": "dev-uploads-scratch",
+      "region": "us-east-1",
+      "remediation": "Remove public WRITE/FULL_CONTROL grants from the bucket ACL and bucket policy. Enable S3 Block Public Access at the bucket and account level.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": true,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.1",
+          "control_title": "Ensure S3 buckets are not publicly accessible"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009085+00:00"
+    },
+    {
+      "id": "5e980a3b-b427-4c3e-bff7-d266fc2e5d26",
+      "fingerprint": "10dda57aea40fe2c",
+      "check_id": "S3_NO_ENCRYPTION",
+      "title": "S3 bucket does not enforce server-side encryption",
+      "description": "Bucket 'dev-uploads-scratch' has no default server-side encryption configuration (SSE-S3 or SSE-KMS).",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::dev-uploads-scratch",
+      "resource_name": "dev-uploads-scratch",
+      "region": "us-east-1",
+      "remediation": "Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": true,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.2",
+          "control_title": "Ensure S3 buckets have server-side encryption enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009092+00:00"
+    },
+    {
+      "id": "b7c25da4-ce7c-48bf-9f9d-847aff83012a",
+      "fingerprint": "df0be4350c9f1373",
+      "check_id": "S3_NO_VERSIONING",
+      "title": "S3 bucket versioning is disabled",
+      "description": "Bucket 'dev-uploads-scratch' does not have versioning enabled, increasing risk of unrecoverable data loss from accidental deletion or overwrite.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::dev-uploads-scratch",
+      "resource_name": "dev-uploads-scratch",
+      "region": "us-east-1",
+      "remediation": "Enable versioning via PutBucketVersioning, and consider adding an MFA Delete requirement for critical buckets.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": true,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.3",
+          "control_title": "Ensure S3 bucket versioning is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009100+00:00"
+    },
+    {
+      "id": "87402121-4fb7-4f22-a01c-999d3e0e9cb1",
+      "fingerprint": "2ef4dcdcc1793995",
+      "check_id": "S3_NO_LOGGING",
+      "title": "S3 bucket access logging is disabled",
+      "description": "Bucket 'dev-uploads-scratch' does not have server access logging enabled, limiting forensic visibility into who accessed objects.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::dev-uploads-scratch",
+      "resource_name": "dev-uploads-scratch",
+      "region": "us-east-1",
+      "remediation": "Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": true,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.4",
+          "control_title": "Ensure S3 bucket access logging is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009107+00:00"
+    },
+    {
+      "id": "46caae33-cb24-474f-aa3d-962db13c1d6c",
+      "fingerprint": "bb9a8aab01bb2799",
+      "check_id": "S3_BPA_DISABLED",
+      "title": "S3 Block Public Access is not fully enabled",
+      "description": "Bucket 'dev-uploads-scratch' does not have all four S3 Block Public Access settings enabled, leaving a gap that could allow future accidental exposure.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "s3_bucket",
+      "resource_id": "arn:aws:s3:::dev-uploads-scratch",
+      "resource_name": "dev-uploads-scratch",
+      "region": "us-east-1",
+      "remediation": "Enable all four Block Public Access settings at the bucket level (and ideally at the account level as a guardrail).",
+      "evidence": {
+        "region": "us-east-1",
+        "public_read": true,
+        "public_write": true,
+        "encryption": null,
+        "versioning": false,
+        "logging_enabled": false,
+        "block_public_access": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.1.5",
+          "control_title": "Ensure S3 Block Public Access is enabled at the bucket level"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.009114+00:00"
+    },
+    {
+      "id": "3e44e176-cca0-44cc-a3ef-135c6b2d05ec",
+      "fingerprint": "aa041f7f13f20fff",
+      "check_id": "IAM_ACCESS_KEY_ROTATION",
+      "title": "IAM access key exceeds rotation policy",
+      "description": "Access key AKIAEXAMPLE00000001 for user 'svc-ci-deploy' is 412 days old, exceeding the 90-day rotation window.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "iam_user",
+      "resource_id": "arn:aws:iam::{account}:user/svc-ci-deploy",
+      "resource_name": "svc-ci-deploy",
+      "region": "global",
+      "remediation": "Rotate the access key and, where possible, replace long-lived keys with short-lived credentials via IAM roles / STS / OIDC federation.",
+      "evidence": {
+        "mfa_enabled": false,
+        "access_keys": [
+          {
+            "id": "AKIAEXAMPLE00000001",
+            "age_days": 412,
+            "last_used_days_ago": 2
+          }
+        ],
+        "console_access": false,
+        "attached_policies": [
+          "AdministratorAccess"
+        ],
+        "inline_policies": []
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.14",
+          "control_title": "Ensure access keys are rotated every 90 days or less"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306263+00:00"
+    },
+    {
+      "id": "7815a9d9-3ede-4b48-8a48-91226d7033c3",
+      "fingerprint": "f371f849ad977a25",
+      "check_id": "IAM_ADMIN_POLICY_ATTACHED",
+      "title": "Highly privileged policy attached directly to IAM user",
+      "description": "User 'svc-ci-deploy' has the 'AdministratorAccess' managed policy attached directly, rather than being granted broad access via a role.",
+      "severity": "high",
+      "severity_weight": 9,
+      "resource_type": "iam_user",
+      "resource_id": "arn:aws:iam::{account}:user/svc-ci-deploy",
+      "resource_name": "svc-ci-deploy",
+      "region": "global",
+      "remediation": "Attach broad-privilege policies to IAM roles/groups instead of individual users, and apply least-privilege, scoped policies per user.",
+      "evidence": {
+        "mfa_enabled": false,
+        "access_keys": [
+          {
+            "id": "AKIAEXAMPLE00000001",
+            "age_days": 412,
+            "last_used_days_ago": 2
+          }
+        ],
+        "console_access": false,
+        "attached_policies": [
+          "AdministratorAccess"
+        ],
+        "inline_policies": []
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.16",
+          "control_title": "Ensure IAM policies with full administrative privileges are not attached to users directly"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306294+00:00"
+    },
+    {
+      "id": "1e81e78b-2257-4f57-9159-b85f21f2a8bd",
+      "fingerprint": "6d3ca29ae5d0f1b5",
+      "check_id": "IAM_ADMIN_POLICY_ATTACHED",
+      "title": "Highly privileged policy attached directly to IAM user",
+      "description": "User 'jsmith' has the 'PowerUserAccess' managed policy attached directly, rather than being granted broad access via a role.",
+      "severity": "high",
+      "severity_weight": 9,
+      "resource_type": "iam_user",
+      "resource_id": "arn:aws:iam::{account}:user/jsmith",
+      "resource_name": "jsmith",
+      "region": "global",
+      "remediation": "Attach broad-privilege policies to IAM roles/groups instead of individual users, and apply least-privilege, scoped policies per user.",
+      "evidence": {
+        "mfa_enabled": true,
+        "access_keys": [
+          {
+            "id": "AKIAEXAMPLE00000002",
+            "age_days": 40,
+            "last_used_days_ago": 1
+          }
+        ],
+        "console_access": true,
+        "attached_policies": [
+          "PowerUserAccess"
+        ],
+        "inline_policies": []
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.16",
+          "control_title": "Ensure IAM policies with full administrative privileges are not attached to users directly"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306309+00:00"
+    },
+    {
+      "id": "1f7d6b8b-e506-415e-b263-5c3353068661",
+      "fingerprint": "c09315ffd08df5c3",
+      "check_id": "IAM_NO_MFA_CONSOLE",
+      "title": "IAM user has console access without MFA",
+      "description": "User 'root-break-glass' can sign in to the AWS Console with a password but does not have a multi-factor authentication device registered.",
+      "severity": "critical",
+      "severity_weight": 12,
+      "resource_type": "iam_user",
+      "resource_id": "arn:aws:iam::{account}:user/root-break-glass",
+      "resource_name": "root-break-glass",
+      "region": "global",
+      "remediation": "Require and enforce MFA enrollment for every IAM user with console access; consider an IAM policy that denies actions when MFA is absent.",
+      "evidence": {
+        "mfa_enabled": false,
+        "access_keys": [],
+        "console_access": true,
+        "attached_policies": [],
+        "inline_policies": [
+          "FullAccessInline"
+        ],
+        "is_root_proxy": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.10",
+          "control_title": "Ensure MFA is enabled for all IAM users with a console password"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306321+00:00"
+    },
+    {
+      "id": "6834f566-c9ce-42a3-90ec-d88a7a4f6995",
+      "fingerprint": "eca5a575bedbf5b5",
+      "check_id": "IAM_ACCESS_KEY_ROTATION",
+      "title": "IAM access key exceeds rotation policy",
+      "description": "Access key AKIAEXAMPLE00000003 for user 'legacy-app-user' is 730 days old, exceeding the 90-day rotation window.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "iam_user",
+      "resource_id": "arn:aws:iam::{account}:user/legacy-app-user",
+      "resource_name": "legacy-app-user",
+      "region": "global",
+      "remediation": "Rotate the access key and, where possible, replace long-lived keys with short-lived credentials via IAM roles / STS / OIDC federation.",
+      "evidence": {
+        "mfa_enabled": false,
+        "access_keys": [
+          {
+            "id": "AKIAEXAMPLE00000003",
+            "age_days": 730,
+            "last_used_days_ago": 220
+          }
+        ],
+        "console_access": false,
+        "attached_policies": [
+          "AmazonS3FullAccess"
+        ],
+        "inline_policies": []
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.14",
+          "control_title": "Ensure access keys are rotated every 90 days or less"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306332+00:00"
+    },
+    {
+      "id": "1be0943d-5d96-4bf6-9989-125c97a7a181",
+      "fingerprint": "0cecca70c97c7bbe",
+      "check_id": "IAM_UNUSED_CREDENTIALS",
+      "title": "IAM access key unused for an extended period",
+      "description": "Access key AKIAEXAMPLE00000003 for user 'legacy-app-user' has not been used in 220 days.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "iam_user",
+      "resource_id": "arn:aws:iam::{account}:user/legacy-app-user",
+      "resource_name": "legacy-app-user",
+      "region": "global",
+      "remediation": "Deactivate or delete access keys that are no longer in active use to reduce the credential attack surface.",
+      "evidence": {
+        "mfa_enabled": false,
+        "access_keys": [
+          {
+            "id": "AKIAEXAMPLE00000003",
+            "age_days": 730,
+            "last_used_days_ago": 220
+          }
+        ],
+        "console_access": false,
+        "attached_policies": [
+          "AmazonS3FullAccess"
+        ],
+        "inline_policies": []
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.12",
+          "control_title": "Ensure credentials unused for 45 days or more are disabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306340+00:00"
+    },
+    {
+      "id": "e39145ea-1b20-486b-b523-f7a5559aca20",
+      "fingerprint": "8e5abf9119807064",
+      "check_id": "IAM_ROOT_MFA_DISABLED",
+      "title": "Root account does not have MFA enabled",
+      "description": "The AWS account root user does not have a multi-factor authentication device configured. The root user has unrestricted access to every resource in the account.",
+      "severity": "critical",
+      "severity_weight": 12,
+      "resource_type": "account",
+      "resource_id": "arn:aws:iam::{account}:root",
+      "resource_name": "root",
+      "region": "global",
+      "remediation": "Enable a hardware or virtual MFA device on the root user immediately, and avoid using the root user for daily tasks.",
+      "evidence": {
+        "root_mfa_enabled": false,
+        "password_policy": {
+          "minimum_length": 8,
+          "requires_symbols": false,
+          "requires_numbers": true,
+          "max_age_days": null,
+          "reuse_prevention": 0
+        },
+        "account_alternate_contacts_set": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.5",
+          "control_title": "Ensure MFA is enabled for the root user"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306352+00:00"
+    },
+    {
+      "id": "1a6c0df8-f2bd-4c9f-955a-f05b0c0d841f",
+      "fingerprint": "6ec1c7eac1bbcc0b",
+      "check_id": "IAM_WEAK_PASSWORD_POLICY",
+      "title": "Account password policy does not meet security baseline",
+      "description": "The IAM account password policy does not require a sufficiently long/complex password or does not prevent password reuse.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "account",
+      "resource_id": "arn:aws:iam::{account}:root",
+      "resource_name": "password-policy",
+      "region": "global",
+      "remediation": "Set minimum length to 14+, require symbols and numbers, and set password reuse prevention to at least 5.",
+      "evidence": {
+        "minimum_length": 8,
+        "requires_symbols": false,
+        "requires_numbers": true,
+        "max_age_days": null,
+        "reuse_prevention": 0
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "1.8",
+          "control_title": "Ensure IAM password policy requires strong passwords"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.306361+00:00"
+    },
+    {
+      "id": "f880c895-4839-4f5e-a682-79173842a2ec",
+      "fingerprint": "4360ed9bc95b3626",
+      "check_id": "SG_SSH_OPEN_WORLD",
+      "title": "Security group exposes SSH (port 22) to the internet",
+      "description": "Security group 'web-prod-sg' (sg-0a1b2c3d4e5f60001) allows inbound SSH traffic on port 22 from 0.0.0.0/0.",
+      "severity": "critical",
+      "severity_weight": 12,
+      "resource_type": "security_group",
+      "resource_id": "arn:aws:ec2:us-east-1:{account}:security-group/sg-0a1b2c3d4e5f60001",
+      "resource_name": "web-prod-sg",
+      "region": "us-east-1",
+      "remediation": "Restrict port 22 ingress to specific known IP ranges (e.g. office/VPN CIDRs) or remove the rule and use a bastion/SSM Session Manager / VPN for administrative access.",
+      "evidence": {
+        "group_id": "sg-0a1b2c3d4e5f60001",
+        "vpc_id": "vpc-0aaa1111",
+        "ingress_rules": [
+          {
+            "protocol": "tcp",
+            "from_port": 22,
+            "to_port": 22,
+            "cidr": "0.0.0.0/0"
+          },
+          {
+            "protocol": "tcp",
+            "from_port": 443,
+            "to_port": 443,
+            "cidr": "0.0.0.0/0"
+          }
+        ],
+        "attached_to": [
+          "i-0111aaa222bbb333c"
+        ]
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "5.2",
+          "control_title": "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.379105+00:00"
+    },
+    {
+      "id": "a6d00a05-3367-4320-9d20-a0c7042ef4ba",
+      "fingerprint": "a9377a1ab977157d",
+      "check_id": "SG_DATABASE_PORT_OPEN_WORLD",
+      "title": "Security group exposes MySQL (port 3306) to the internet",
+      "description": "Security group 'db-prod-sg' (sg-0a1b2c3d4e5f60002) allows inbound MySQL traffic on port 3306 from 0.0.0.0/0.",
+      "severity": "high",
+      "severity_weight": 9,
+      "resource_type": "security_group",
+      "resource_id": "arn:aws:ec2:us-east-1:{account}:security-group/sg-0a1b2c3d4e5f60002",
+      "resource_name": "db-prod-sg",
+      "region": "us-east-1",
+      "remediation": "Restrict port 3306 ingress to specific known IP ranges (e.g. office/VPN CIDRs) or remove the rule and use a bastion/SSM Session Manager / VPN for administrative access.",
+      "evidence": {
+        "group_id": "sg-0a1b2c3d4e5f60002",
+        "vpc_id": "vpc-0aaa1111",
+        "ingress_rules": [
+          {
+            "protocol": "tcp",
+            "from_port": 3306,
+            "to_port": 3306,
+            "cidr": "0.0.0.0/0"
+          }
+        ],
+        "attached_to": [
+          "db-prod-main"
+        ]
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "5.2",
+          "control_title": "Ensure no security groups allow unrestricted ingress to database ports"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.379143+00:00"
+    },
+    {
+      "id": "15342c3c-03c3-4656-8a5b-e3048e162e5b",
+      "fingerprint": "58bb68f3061e08ff",
+      "check_id": "SG_RDP_OPEN_WORLD",
+      "title": "Security group exposes RDP (port 3389) to the internet",
+      "description": "Security group 'rdp-admin-sg' (sg-0a1b2c3d4e5f60004) allows inbound RDP traffic on port 3389 from 0.0.0.0/0.",
+      "severity": "critical",
+      "severity_weight": 12,
+      "resource_type": "security_group",
+      "resource_id": "arn:aws:ec2:us-west-2:{account}:security-group/sg-0a1b2c3d4e5f60004",
+      "resource_name": "rdp-admin-sg",
+      "region": "us-west-2",
+      "remediation": "Restrict port 3389 ingress to specific known IP ranges (e.g. office/VPN CIDRs) or remove the rule and use a bastion/SSM Session Manager / VPN for administrative access.",
+      "evidence": {
+        "group_id": "sg-0a1b2c3d4e5f60004",
+        "vpc_id": "vpc-0bbb2222",
+        "ingress_rules": [
+          {
+            "protocol": "tcp",
+            "from_port": 3389,
+            "to_port": 3389,
+            "cidr": "0.0.0.0/0"
+          }
+        ],
+        "attached_to": [
+          "i-0333ccc444ddd555e"
+        ]
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "5.3",
+          "control_title": "Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.379160+00:00"
+    },
+    {
+      "id": "866cda8e-519c-4264-bce1-58c053ea9c8f",
+      "fingerprint": "8a36bcb3d44c17b3",
+      "check_id": "SG_ALL_TRAFFIC_OPEN",
+      "title": "Security group allows unrestricted ingress on all ports/protocols",
+      "description": "Security group 'all-traffic-legacy' (sg-0a1b2c3d4e5f60005) allows inbound traffic from 0.0.0.0/0 on all ports and protocols.",
+      "severity": "critical",
+      "severity_weight": 12,
+      "resource_type": "security_group",
+      "resource_id": "arn:aws:ec2:us-east-1:{account}:security-group/sg-0a1b2c3d4e5f60005",
+      "resource_name": "all-traffic-legacy",
+      "region": "us-east-1",
+      "remediation": "Restrict ingress rules to specific, required ports and known source CIDR ranges. Never allow all-ports/all-protocols from the internet.",
+      "evidence": {
+        "group_id": "sg-0a1b2c3d4e5f60005",
+        "vpc_id": "vpc-0aaa1111",
+        "ingress_rules": [
+          {
+            "protocol": "-1",
+            "from_port": -1,
+            "to_port": -1,
+            "cidr": "0.0.0.0/0"
+          }
+        ],
+        "attached_to": []
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "5.4",
+          "control_title": "Ensure no security groups allow unrestricted ingress to all ports/protocols"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.379172+00:00"
+    },
+    {
+      "id": "7eda8ca6-c1b1-41bb-87f1-7ec27c9e76b9",
+      "fingerprint": "e3db9884ce22cd0c",
+      "check_id": "RDS_PUBLIC_ACCESS",
+      "title": "RDS instance is publicly accessible",
+      "description": "Database instance 'db-prod-main' (mysql) has a public endpoint and can be reached directly from the internet.",
+      "severity": "critical",
+      "severity_weight": 12,
+      "resource_type": "rds_instance",
+      "resource_id": "arn:aws:rds:us-east-1:{account}:db:db-prod-main",
+      "resource_name": "db-prod-main",
+      "region": "us-east-1",
+      "remediation": "Set PubliclyAccessible to false and place the instance in a private subnet. Access it through a bastion host, VPN, or application tier only.",
+      "evidence": {
+        "engine": "mysql",
+        "region": "us-east-1",
+        "publicly_accessible": true,
+        "storage_encrypted": false,
+        "backup_retention_days": 0,
+        "multi_az": false,
+        "deletion_protection": false,
+        "auto_minor_version_upgrade": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.3.1",
+          "control_title": "Ensure RDS instances are not publicly accessible"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.466946+00:00"
+    },
+    {
+      "id": "841b2527-3845-4128-86c8-ca8ee01d6bd2",
+      "fingerprint": "cc6bb23dc41e4f10",
+      "check_id": "RDS_NO_ENCRYPTION",
+      "title": "RDS instance storage is not encrypted",
+      "description": "Database instance 'db-prod-main' does not have storage encryption (KMS) enabled, exposing data at rest.",
+      "severity": "high",
+      "severity_weight": 9,
+      "resource_type": "rds_instance",
+      "resource_id": "arn:aws:rds:us-east-1:{account}:db:db-prod-main",
+      "resource_name": "db-prod-main",
+      "region": "us-east-1",
+      "remediation": "Enable storage encryption. Existing unencrypted instances typically require a snapshot-and-restore into a new encrypted instance.",
+      "evidence": {
+        "engine": "mysql",
+        "region": "us-east-1",
+        "publicly_accessible": true,
+        "storage_encrypted": false,
+        "backup_retention_days": 0,
+        "multi_az": false,
+        "deletion_protection": false,
+        "auto_minor_version_upgrade": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.3.2",
+          "control_title": "Ensure RDS instance encryption is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.466976+00:00"
+    },
+    {
+      "id": "070d7156-79e9-4928-bb28-f39f0f3020e1",
+      "fingerprint": "5fb2223fa7f7b550",
+      "check_id": "RDS_NO_BACKUP",
+      "title": "RDS automated backups are disabled",
+      "description": "Database instance 'db-prod-main' has a backup retention period of 0 days, meaning automated backups are effectively disabled.",
+      "severity": "high",
+      "severity_weight": 9,
+      "resource_type": "rds_instance",
+      "resource_id": "arn:aws:rds:us-east-1:{account}:db:db-prod-main",
+      "resource_name": "db-prod-main",
+      "region": "us-east-1",
+      "remediation": "Set the backup retention period to at least 7 days (30+ for production/critical systems) and validate restore procedures periodically.",
+      "evidence": {
+        "engine": "mysql",
+        "region": "us-east-1",
+        "publicly_accessible": true,
+        "storage_encrypted": false,
+        "backup_retention_days": 0,
+        "multi_az": false,
+        "deletion_protection": false,
+        "auto_minor_version_upgrade": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.3.3",
+          "control_title": "Ensure RDS automated backups are enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.466987+00:00"
+    },
+    {
+      "id": "0724bff6-2f9f-4bb2-a784-a42d79e3e675",
+      "fingerprint": "8eec4f1953d75b65",
+      "check_id": "RDS_NO_DELETION_PROTECTION",
+      "title": "RDS deletion protection is disabled",
+      "description": "Database instance 'db-prod-main' does not have deletion protection enabled, allowing accidental or malicious deletion.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "rds_instance",
+      "resource_id": "arn:aws:rds:us-east-1:{account}:db:db-prod-main",
+      "resource_name": "db-prod-main",
+      "region": "us-east-1",
+      "remediation": "Enable deletion protection for all production database instances.",
+      "evidence": {
+        "engine": "mysql",
+        "region": "us-east-1",
+        "publicly_accessible": true,
+        "storage_encrypted": false,
+        "backup_retention_days": 0,
+        "multi_az": false,
+        "deletion_protection": false,
+        "auto_minor_version_upgrade": false
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.3.4",
+          "control_title": "Ensure RDS deletion protection is enabled for production databases"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.466997+00:00"
+    },
+    {
+      "id": "d3c7e3cd-dca4-490c-b612-3c9b49bd6aa9",
+      "fingerprint": "7c6a95d946c333ba",
+      "check_id": "RDS_NO_DELETION_PROTECTION",
+      "title": "RDS deletion protection is disabled",
+      "description": "Database instance 'db-staging-replica' does not have deletion protection enabled, allowing accidental or malicious deletion.",
+      "severity": "low",
+      "severity_weight": 3,
+      "resource_type": "rds_instance",
+      "resource_id": "arn:aws:rds:us-east-1:{account}:db:db-staging-replica",
+      "resource_name": "db-staging-replica",
+      "region": "us-east-1",
+      "remediation": "Enable deletion protection for all production database instances.",
+      "evidence": {
+        "engine": "postgres",
+        "region": "us-east-1",
+        "publicly_accessible": false,
+        "storage_encrypted": true,
+        "backup_retention_days": 7,
+        "multi_az": false,
+        "deletion_protection": false,
+        "auto_minor_version_upgrade": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.3.4",
+          "control_title": "Ensure RDS deletion protection is enabled for production databases"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.467008+00:00"
+    },
+    {
+      "id": "d4bd9860-6336-47a2-9d65-819a0e9c4bc8",
+      "fingerprint": "3661ab8752e97666",
+      "check_id": "CLOUDTRAIL_NOT_MULTI_REGION",
+      "title": "CloudTrail trail is not multi-region",
+      "description": "Trail 'management-events-trail' only records events in its home region, creating blind spots for activity in other AWS regions.",
+      "severity": "high",
+      "severity_weight": 9,
+      "resource_type": "cloudtrail",
+      "resource_id": "arn:aws:cloudtrail:us-east-1:{account}:trail/management-events-trail",
+      "resource_name": "management-events-trail",
+      "region": "us-east-1",
+      "remediation": "Enable 'multi-region trail' so API activity is captured account-wide, including regions you don't normally use.",
+      "evidence": {
+        "region": "us-east-1",
+        "is_multi_region": false,
+        "log_file_validation_enabled": true,
+        "kms_encrypted": false,
+        "is_logging": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "3.1",
+          "control_title": "Ensure CloudTrail is enabled in all regions"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.619207+00:00"
+    },
+    {
+      "id": "18453991-dda1-487c-8eb0-c0f172f6fd21",
+      "fingerprint": "18d753570c04d3f2",
+      "check_id": "CLOUDTRAIL_NOT_ENCRYPTED",
+      "title": "CloudTrail logs are not encrypted with KMS",
+      "description": "Trail 'management-events-trail' delivers logs to S3 without SSE-KMS encryption configured.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "cloudtrail",
+      "resource_id": "arn:aws:cloudtrail:us-east-1:{account}:trail/management-events-trail",
+      "resource_name": "management-events-trail",
+      "region": "us-east-1",
+      "remediation": "Configure the trail to use SSE-KMS encryption with a dedicated CMK, and restrict key usage via a tightly scoped key policy.",
+      "evidence": {
+        "region": "us-east-1",
+        "is_multi_region": false,
+        "log_file_validation_enabled": true,
+        "kms_encrypted": false,
+        "is_logging": true
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "3.5",
+          "control_title": "Ensure CloudTrail logs are encrypted using KMS"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.619238+00:00"
+    },
+    {
+      "id": "679cbab0-d31a-4f60-aca9-b8dc397d6d83",
+      "fingerprint": "7d09394d15fa32ba",
+      "check_id": "EBS_NOT_ENCRYPTED",
+      "title": "EBS volume is not encrypted",
+      "description": "Volume 'vol-0a1111aaa2222bbb3' does not have encryption enabled, exposing data at rest if the underlying disk is ever improperly decommissioned or accessed.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "ebs_volume",
+      "resource_id": "arn:aws:ec2:us-east-1:{account}:volume/vol-0a1111aaa2222bbb3",
+      "resource_name": "vol-0a1111aaa2222bbb3",
+      "region": "us-east-1",
+      "remediation": "Enable EBS encryption by default at the account/region level, and migrate existing unencrypted volumes via snapshot-copy-with-encryption.",
+      "evidence": {
+        "volume_id": "vol-0a1111aaa2222bbb3",
+        "region": "us-east-1",
+        "encrypted": false,
+        "state": "in-use"
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.2.1",
+          "control_title": "Ensure EBS volume encryption is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.682984+00:00"
+    },
+    {
+      "id": "decd5812-344b-456e-bd3f-fd30b5850db3",
+      "fingerprint": "30db86bb7551ff9e",
+      "check_id": "EBS_NOT_ENCRYPTED",
+      "title": "EBS volume is not encrypted",
+      "description": "Volume 'vol-0c3333ccc4444ddd5' does not have encryption enabled, exposing data at rest if the underlying disk is ever improperly decommissioned or accessed.",
+      "severity": "medium",
+      "severity_weight": 6,
+      "resource_type": "ebs_volume",
+      "resource_id": "arn:aws:ec2:us-west-2:{account}:volume/vol-0c3333ccc4444ddd5",
+      "resource_name": "vol-0c3333ccc4444ddd5",
+      "region": "us-west-2",
+      "remediation": "Enable EBS encryption by default at the account/region level, and migrate existing unencrypted volumes via snapshot-copy-with-encryption.",
+      "evidence": {
+        "volume_id": "vol-0c3333ccc4444ddd5",
+        "region": "us-west-2",
+        "encrypted": false,
+        "state": "available"
+      },
+      "compliance": [
+        {
+          "framework": "CIS AWS Foundations Benchmark v3.0",
+          "control_id": "2.2.1",
+          "control_title": "Ensure EBS volume encryption is enabled"
+        }
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html"
+      ],
+      "status": "open",
+      "discovered_at": "2026-08-07T05:22:52.683013+00:00"
+    }
+  ],
+  "risk": {
+    "score": 4,
+    "grade": "F",
+    "raw_penalty": 232.5,
+    "severity_counts": {
+      "info": 0,
+      "low": 10,
+      "medium": 13,
+      "high": 7,
+      "critical": 7
+    },
+    "service_scores": {
+      "s3_bucket": 30,
+      "iam_user": 53,
+      "account": 77,
+      "security_group": 53,
+      "rds_instance": 60,
+      "cloudtrail": 81,
+      "ebs_volume": 84
+    },
+    "total_findings": 37
+  },
+  "scanner_errors": {}
+}

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CloudGuard Security Assessment Report</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          margin: 0; padding: 40px; color: #111827; background: #ffffff; line-height: 1.5; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start;
+             border-bottom: 3px solid #1e293b; padding-bottom: 20px; margin-bottom: 30px; }
+  .logo { font-size: 24px; font-weight: 800; color: #1e293b; }
+  .logo span { color: #2563eb; }
+  .meta { text-align:right; font-size: 13px; color: #6b7280; }
+  .score-card { display:flex; gap: 20px; align-items:center; background:#f9fafb;
+                 border-radius:12px; padding:24px; margin-bottom:30px; }
+  .grade-circle { width:90px;height:90px;border-radius:50%;display:flex;align-items:center;
+                    justify-content:center;font-size:36px;font-weight:800;color:#fff;
+                    background:#dc2626; flex-shrink:0; }
+  .score-details h2 { margin:0 0 4px 0; font-size:20px;}
+  .score-details p { margin:0; color:#6b7280; font-size:14px;}
+  .severity-strip { display:flex; gap:12px; margin-bottom:30px; }
+  table { width:100%; border-collapse:collapse; margin-bottom: 30px;}
+  th { text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+        color:#6b7280; padding:10px 12px; border-bottom:2px solid #e5e7eb; }
+  td { padding:12px; border-bottom:1px solid #f3f4f6; vertical-align:top; font-size:14px; }
+  h2.section { font-size:16px; text-transform:uppercase; letter-spacing:.05em; color:#374151;
+                border-left: 4px solid #2563eb; padding-left:10px; margin: 36px 0 16px 0; }
+  .footer { margin-top:40px; padding-top:20px; border-top:1px solid #e5e7eb;
+             font-size:12px; color:#9ca3af; }
+  @media print { body { padding: 15px; } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">Cloud<span>Guard</span></div>
+    <div class="meta">
+      Cloud Security Assessment Report<br>
+      Account: Demo Account<br>
+      Scan ID: 052caacc-c64f-4c4b-b573-a0cf8448265d<br>
+      Generated: 2026-08-07 05:22 UTC &middot; Mode: demo
+    </div>
+  </div>
+
+  <div class="score-card">
+    <div class="grade-circle">F</div>
+    <div class="score-details">
+      <h2>Security Posture Score: 4/100</h2>
+      <p>37 open findings across 7 resource categories &middot; scan completed in 0.63s</p>
+    </div>
+  </div>
+
+  <div class="severity-strip">
+    <div style="text-align:center;padding:16px;background:#f9fafb;border-radius:8px;flex:1;">
+            <div style="font-size:28px;font-weight:700;color:#6b7280;">0</div>
+            <div style="font-size:12px;text-transform:uppercase;color:#6b7280;letter-spacing:.05em;">info</div>
+        </div><div style="text-align:center;padding:16px;background:#f9fafb;border-radius:8px;flex:1;">
+            <div style="font-size:28px;font-weight:700;color:#2563eb;">10</div>
+            <div style="font-size:12px;text-transform:uppercase;color:#6b7280;letter-spacing:.05em;">low</div>
+        </div><div style="text-align:center;padding:16px;background:#f9fafb;border-radius:8px;flex:1;">
+            <div style="font-size:28px;font-weight:700;color:#d97706;">13</div>
+            <div style="font-size:12px;text-transform:uppercase;color:#6b7280;letter-spacing:.05em;">medium</div>
+        </div><div style="text-align:center;padding:16px;background:#f9fafb;border-radius:8px;flex:1;">
+            <div style="font-size:28px;font-weight:700;color:#ea580c;">7</div>
+            <div style="font-size:12px;text-transform:uppercase;color:#6b7280;letter-spacing:.05em;">high</div>
+        </div><div style="text-align:center;padding:16px;background:#f9fafb;border-radius:8px;flex:1;">
+            <div style="font-size:28px;font-weight:700;color:#dc2626;">7</div>
+            <div style="font-size:12px;text-transform:uppercase;color:#6b7280;letter-spacing:.05em;">critical</div>
+        </div>
+  </div>
+
+  <h2 class="section">Score by Resource Category</h2>
+  <table>
+    <tr><th>Category</th><th>Score</th><th></th></tr>
+    <tr><td>s3_bucket</td><td>30</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:#dc2626;
+            width:30%;height:8px;"></div></div></td></tr><tr><td>iam_user</td><td>53</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:#dc2626;
+            width:53%;height:8px;"></div></div></td></tr><tr><td>account</td><td>77</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:#d97706;
+            width:77%;height:8px;"></div></div></td></tr><tr><td>security_group</td><td>53</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:#dc2626;
+            width:53%;height:8px;"></div></div></td></tr><tr><td>rds_instance</td><td>60</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:#d97706;
+            width:60%;height:8px;"></div></div></td></tr><tr><td>cloudtrail</td><td>81</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:#16a34a;
+            width:81%;height:8px;"></div></div></td></tr><tr><td>ebs_volume</td><td>84</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:#16a34a;
+            width:84%;height:8px;"></div></div></td></tr>
+  </table>
+
+  <h2 class="section">Detailed Findings (37)</h2>
+  <table>
+    <tr><th>Severity</th><th>Finding</th><th>Resource</th><th>Remediation</th><th>Compliance</th></tr>
+    
+        <tr>
+          <td><span style="background:#dc2626;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">critical</span></td>
+          <td><strong>S3 bucket allows public write access</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;dev-uploads-scratch&#x27; grants WRITE or FULL_CONTROL to the AllUsers group, allowing anyone on the internet to upload, overwrite, or delete objects.</span></td>
+          <td style="font-family:monospace;font-size:12px;">dev-uploads-scratch<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Remove public WRITE/FULL_CONTROL grants from the bucket ACL and bucket policy. Enable S3 Block Public Access at the bucket and account level.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.1</td>
+        </tr>
+        <tr>
+          <td><span style="background:#dc2626;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">critical</span></td>
+          <td><strong>IAM user has console access without MFA</strong><br>
+              <span style="color:#6b7280;font-size:13px;">User &#x27;root-break-glass&#x27; can sign in to the AWS Console with a password but does not have a multi-factor authentication device registered.</span></td>
+          <td style="font-family:monospace;font-size:12px;">root-break-glass<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Require and enforce MFA enrollment for every IAM user with console access; consider an IAM policy that denies actions when MFA is absent.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.10</td>
+        </tr>
+        <tr>
+          <td><span style="background:#dc2626;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">critical</span></td>
+          <td><strong>Root account does not have MFA enabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">The AWS account root user does not have a multi-factor authentication device configured. The root user has unrestricted access to every resource in the account.</span></td>
+          <td style="font-family:monospace;font-size:12px;">root<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Enable a hardware or virtual MFA device on the root user immediately, and avoid using the root user for daily tasks.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.5</td>
+        </tr>
+        <tr>
+          <td><span style="background:#dc2626;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">critical</span></td>
+          <td><strong>Security group exposes SSH (port 22) to the internet</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Security group &#x27;web-prod-sg&#x27; (sg-0a1b2c3d4e5f60001) allows inbound SSH traffic on port 22 from 0.0.0.0/0.</span></td>
+          <td style="font-family:monospace;font-size:12px;">web-prod-sg<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Restrict port 22 ingress to specific known IP ranges (e.g. office/VPN CIDRs) or remove the rule and use a bastion/SSM Session Manager / VPN for administrative access.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 5.2</td>
+        </tr>
+        <tr>
+          <td><span style="background:#dc2626;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">critical</span></td>
+          <td><strong>Security group exposes RDP (port 3389) to the internet</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Security group &#x27;rdp-admin-sg&#x27; (sg-0a1b2c3d4e5f60004) allows inbound RDP traffic on port 3389 from 0.0.0.0/0.</span></td>
+          <td style="font-family:monospace;font-size:12px;">rdp-admin-sg<br>
+              <span style="color:#9ca3af;">us-west-2</span></td>
+          <td style="font-size:13px;">Restrict port 3389 ingress to specific known IP ranges (e.g. office/VPN CIDRs) or remove the rule and use a bastion/SSM Session Manager / VPN for administrative access.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 5.3</td>
+        </tr>
+        <tr>
+          <td><span style="background:#dc2626;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">critical</span></td>
+          <td><strong>Security group allows unrestricted ingress on all ports/protocols</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Security group &#x27;all-traffic-legacy&#x27; (sg-0a1b2c3d4e5f60005) allows inbound traffic from 0.0.0.0/0 on all ports and protocols.</span></td>
+          <td style="font-family:monospace;font-size:12px;">all-traffic-legacy<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Restrict ingress rules to specific, required ports and known source CIDR ranges. Never allow all-ports/all-protocols from the internet.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 5.4</td>
+        </tr>
+        <tr>
+          <td><span style="background:#dc2626;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">critical</span></td>
+          <td><strong>RDS instance is publicly accessible</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Database instance &#x27;db-prod-main&#x27; (mysql) has a public endpoint and can be reached directly from the internet.</span></td>
+          <td style="font-family:monospace;font-size:12px;">db-prod-main<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Set PubliclyAccessible to false and place the instance in a private subnet. Access it through a bastion host, VPN, or application tier only.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.3.1</td>
+        </tr>
+        <tr>
+          <td><span style="background:#ea580c;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">high</span></td>
+          <td><strong>S3 bucket allows public read access</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;prod-app-logs-2024&#x27; grants READ or FULL_CONTROL to the AllUsers group. Any object in this bucket can be read anonymously over the internet.</span></td>
+          <td style="font-family:monospace;font-size:12px;">prod-app-logs-2024<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Remove public READ grants unless the bucket is intentionally hosting public content (e.g. a static website). Enable S3 Block Public Access.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.1</td>
+        </tr>
+        <tr>
+          <td><span style="background:#ea580c;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">high</span></td>
+          <td><strong>Highly privileged policy attached directly to IAM user</strong><br>
+              <span style="color:#6b7280;font-size:13px;">User &#x27;svc-ci-deploy&#x27; has the &#x27;AdministratorAccess&#x27; managed policy attached directly, rather than being granted broad access via a role.</span></td>
+          <td style="font-family:monospace;font-size:12px;">svc-ci-deploy<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Attach broad-privilege policies to IAM roles/groups instead of individual users, and apply least-privilege, scoped policies per user.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.16</td>
+        </tr>
+        <tr>
+          <td><span style="background:#ea580c;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">high</span></td>
+          <td><strong>Highly privileged policy attached directly to IAM user</strong><br>
+              <span style="color:#6b7280;font-size:13px;">User &#x27;jsmith&#x27; has the &#x27;PowerUserAccess&#x27; managed policy attached directly, rather than being granted broad access via a role.</span></td>
+          <td style="font-family:monospace;font-size:12px;">jsmith<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Attach broad-privilege policies to IAM roles/groups instead of individual users, and apply least-privilege, scoped policies per user.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.16</td>
+        </tr>
+        <tr>
+          <td><span style="background:#ea580c;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">high</span></td>
+          <td><strong>Security group exposes MySQL (port 3306) to the internet</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Security group &#x27;db-prod-sg&#x27; (sg-0a1b2c3d4e5f60002) allows inbound MySQL traffic on port 3306 from 0.0.0.0/0.</span></td>
+          <td style="font-family:monospace;font-size:12px;">db-prod-sg<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Restrict port 3306 ingress to specific known IP ranges (e.g. office/VPN CIDRs) or remove the rule and use a bastion/SSM Session Manager / VPN for administrative access.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 5.2</td>
+        </tr>
+        <tr>
+          <td><span style="background:#ea580c;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">high</span></td>
+          <td><strong>RDS instance storage is not encrypted</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Database instance &#x27;db-prod-main&#x27; does not have storage encryption (KMS) enabled, exposing data at rest.</span></td>
+          <td style="font-family:monospace;font-size:12px;">db-prod-main<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable storage encryption. Existing unencrypted instances typically require a snapshot-and-restore into a new encrypted instance.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.3.2</td>
+        </tr>
+        <tr>
+          <td><span style="background:#ea580c;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">high</span></td>
+          <td><strong>RDS automated backups are disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Database instance &#x27;db-prod-main&#x27; has a backup retention period of 0 days, meaning automated backups are effectively disabled.</span></td>
+          <td style="font-family:monospace;font-size:12px;">db-prod-main<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Set the backup retention period to at least 7 days (30+ for production/critical systems) and validate restore procedures periodically.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.3.3</td>
+        </tr>
+        <tr>
+          <td><span style="background:#ea580c;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">high</span></td>
+          <td><strong>CloudTrail trail is not multi-region</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Trail &#x27;management-events-trail&#x27; only records events in its home region, creating blind spots for activity in other AWS regions.</span></td>
+          <td style="font-family:monospace;font-size:12px;">management-events-trail<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable &#x27;multi-region trail&#x27; so API activity is captured account-wide, including regions you don&#x27;t normally use.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 3.1</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>S3 bucket does not enforce server-side encryption</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;prod-app-logs-2024&#x27; has no default server-side encryption configuration (SSE-S3 or SSE-KMS).</span></td>
+          <td style="font-family:monospace;font-size:12px;">prod-app-logs-2024<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.2</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>S3 Block Public Access is not fully enabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;prod-app-logs-2024&#x27; does not have all four S3 Block Public Access settings enabled, leaving a gap that could allow future accidental exposure.</span></td>
+          <td style="font-family:monospace;font-size:12px;">prod-app-logs-2024<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable all four Block Public Access settings at the bucket level (and ideally at the account level as a guardrail).</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.5</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>S3 bucket does not enforce server-side encryption</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;customer-data-backup&#x27; has no default server-side encryption configuration (SSE-S3 or SSE-KMS).</span></td>
+          <td style="font-family:monospace;font-size:12px;">customer-data-backup<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.2</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>S3 Block Public Access is not fully enabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;static-website-assets&#x27; does not have all four S3 Block Public Access settings enabled, leaving a gap that could allow future accidental exposure.</span></td>
+          <td style="font-family:monospace;font-size:12px;">static-website-assets<br>
+              <span style="color:#9ca3af;">us-west-2</span></td>
+          <td style="font-size:13px;">Enable all four Block Public Access settings at the bucket level (and ideally at the account level as a guardrail).</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.5</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>S3 bucket does not enforce server-side encryption</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;terraform-state-prod&#x27; has no default server-side encryption configuration (SSE-S3 or SSE-KMS).</span></td>
+          <td style="font-family:monospace;font-size:12px;">terraform-state-prod<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.2</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>S3 bucket does not enforce server-side encryption</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;dev-uploads-scratch&#x27; has no default server-side encryption configuration (SSE-S3 or SSE-KMS).</span></td>
+          <td style="font-family:monospace;font-size:12px;">dev-uploads-scratch<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable default encryption (SSE-S3 or SSE-KMS) on the bucket via PutBucketEncryption. Prefer SSE-KMS for sensitive data.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.2</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>S3 Block Public Access is not fully enabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;dev-uploads-scratch&#x27; does not have all four S3 Block Public Access settings enabled, leaving a gap that could allow future accidental exposure.</span></td>
+          <td style="font-family:monospace;font-size:12px;">dev-uploads-scratch<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable all four Block Public Access settings at the bucket level (and ideally at the account level as a guardrail).</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.5</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>IAM access key exceeds rotation policy</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Access key AKIAEXAMPLE00000001 for user &#x27;svc-ci-deploy&#x27; is 412 days old, exceeding the 90-day rotation window.</span></td>
+          <td style="font-family:monospace;font-size:12px;">svc-ci-deploy<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Rotate the access key and, where possible, replace long-lived keys with short-lived credentials via IAM roles / STS / OIDC federation.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.14</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>IAM access key exceeds rotation policy</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Access key AKIAEXAMPLE00000003 for user &#x27;legacy-app-user&#x27; is 730 days old, exceeding the 90-day rotation window.</span></td>
+          <td style="font-family:monospace;font-size:12px;">legacy-app-user<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Rotate the access key and, where possible, replace long-lived keys with short-lived credentials via IAM roles / STS / OIDC federation.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.14</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>Account password policy does not meet security baseline</strong><br>
+              <span style="color:#6b7280;font-size:13px;">The IAM account password policy does not require a sufficiently long/complex password or does not prevent password reuse.</span></td>
+          <td style="font-family:monospace;font-size:12px;">password-policy<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Set minimum length to 14+, require symbols and numbers, and set password reuse prevention to at least 5.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.8</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>CloudTrail logs are not encrypted with KMS</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Trail &#x27;management-events-trail&#x27; delivers logs to S3 without SSE-KMS encryption configured.</span></td>
+          <td style="font-family:monospace;font-size:12px;">management-events-trail<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Configure the trail to use SSE-KMS encryption with a dedicated CMK, and restrict key usage via a tightly scoped key policy.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 3.5</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>EBS volume is not encrypted</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Volume &#x27;vol-0a1111aaa2222bbb3&#x27; does not have encryption enabled, exposing data at rest if the underlying disk is ever improperly decommissioned or accessed.</span></td>
+          <td style="font-family:monospace;font-size:12px;">vol-0a1111aaa2222bbb3<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable EBS encryption by default at the account/region level, and migrate existing unencrypted volumes via snapshot-copy-with-encryption.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.2.1</td>
+        </tr>
+        <tr>
+          <td><span style="background:#d97706;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">medium</span></td>
+          <td><strong>EBS volume is not encrypted</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Volume &#x27;vol-0c3333ccc4444ddd5&#x27; does not have encryption enabled, exposing data at rest if the underlying disk is ever improperly decommissioned or accessed.</span></td>
+          <td style="font-family:monospace;font-size:12px;">vol-0c3333ccc4444ddd5<br>
+              <span style="color:#9ca3af;">us-west-2</span></td>
+          <td style="font-size:13px;">Enable EBS encryption by default at the account/region level, and migrate existing unencrypted volumes via snapshot-copy-with-encryption.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.2.1</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>S3 bucket versioning is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;prod-app-logs-2024&#x27; does not have versioning enabled, increasing risk of unrecoverable data loss from accidental deletion or overwrite.</span></td>
+          <td style="font-family:monospace;font-size:12px;">prod-app-logs-2024<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable versioning via PutBucketVersioning, and consider adding an MFA Delete requirement for critical buckets.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.3</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>S3 bucket access logging is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;prod-app-logs-2024&#x27; does not have server access logging enabled, limiting forensic visibility into who accessed objects.</span></td>
+          <td style="font-family:monospace;font-size:12px;">prod-app-logs-2024<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.4</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>S3 bucket versioning is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;static-website-assets&#x27; does not have versioning enabled, increasing risk of unrecoverable data loss from accidental deletion or overwrite.</span></td>
+          <td style="font-family:monospace;font-size:12px;">static-website-assets<br>
+              <span style="color:#9ca3af;">us-west-2</span></td>
+          <td style="font-size:13px;">Enable versioning via PutBucketVersioning, and consider adding an MFA Delete requirement for critical buckets.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.3</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>S3 bucket access logging is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;static-website-assets&#x27; does not have server access logging enabled, limiting forensic visibility into who accessed objects.</span></td>
+          <td style="font-family:monospace;font-size:12px;">static-website-assets<br>
+              <span style="color:#9ca3af;">us-west-2</span></td>
+          <td style="font-size:13px;">Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.4</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>S3 bucket access logging is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;terraform-state-prod&#x27; does not have server access logging enabled, limiting forensic visibility into who accessed objects.</span></td>
+          <td style="font-family:monospace;font-size:12px;">terraform-state-prod<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.4</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>S3 bucket versioning is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;dev-uploads-scratch&#x27; does not have versioning enabled, increasing risk of unrecoverable data loss from accidental deletion or overwrite.</span></td>
+          <td style="font-family:monospace;font-size:12px;">dev-uploads-scratch<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable versioning via PutBucketVersioning, and consider adding an MFA Delete requirement for critical buckets.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.3</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>S3 bucket access logging is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Bucket &#x27;dev-uploads-scratch&#x27; does not have server access logging enabled, limiting forensic visibility into who accessed objects.</span></td>
+          <td style="font-family:monospace;font-size:12px;">dev-uploads-scratch<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable S3 server access logging or, preferably, use CloudTrail S3 data events for more detailed and queryable audit logs.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.1.4</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>IAM access key unused for an extended period</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Access key AKIAEXAMPLE00000003 for user &#x27;legacy-app-user&#x27; has not been used in 220 days.</span></td>
+          <td style="font-family:monospace;font-size:12px;">legacy-app-user<br>
+              <span style="color:#9ca3af;">global</span></td>
+          <td style="font-size:13px;">Deactivate or delete access keys that are no longer in active use to reduce the credential attack surface.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 1.12</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>RDS deletion protection is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Database instance &#x27;db-prod-main&#x27; does not have deletion protection enabled, allowing accidental or malicious deletion.</span></td>
+          <td style="font-family:monospace;font-size:12px;">db-prod-main<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable deletion protection for all production database instances.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.3.4</td>
+        </tr>
+        <tr>
+          <td><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">low</span></td>
+          <td><strong>RDS deletion protection is disabled</strong><br>
+              <span style="color:#6b7280;font-size:13px;">Database instance &#x27;db-staging-replica&#x27; does not have deletion protection enabled, allowing accidental or malicious deletion.</span></td>
+          <td style="font-family:monospace;font-size:12px;">db-staging-replica<br>
+              <span style="color:#9ca3af;">us-east-1</span></td>
+          <td style="font-size:13px;">Enable deletion protection for all production database instances.</td>
+          <td style="font-size:12px;color:#6b7280;">CIS 2.3.4</td>
+        </tr>
+  </table>
+
+  <div class="footer">
+    Generated by CloudGuard — Cloud Security Posture Management.
+    This report reflects the state of scanned resources at the time of the scan and should be
+    re-run periodically. Findings marked "resolved" or "risk accepted" in a prior review are
+    excluded from this listing.
+  </div>
+</body>
+</html>

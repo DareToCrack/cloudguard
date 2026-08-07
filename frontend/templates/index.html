@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloudGuard — Cloud Security Posture Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/tokens.css">
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+
+<div class="loading-line" id="loadingLine"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand__mark">CG</div>
+    <div class="brand__name">Cloud<em>Guard</em></div>
+    <div class="brand__tag">Cloud Security Posture Management</div>
+  </div>
+  <nav class="nav">
+    <button data-view="dashboard" class="active">Dashboard</button>
+    <button data-view="findings">Findings</button>
+    <button data-view="compliance">Compliance</button>
+  </nav>
+  <div class="topbar__actions">
+    <span class="mode-pill" id="modePill">—</span>
+    <button class="btn btn--ghost" id="exportBtn">Export report</button>
+    <button class="btn btn--primary" id="scanBtn">▶ Run scan</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ DASHBOARD VIEW ============ -->
+  <section class="view active" id="view-dashboard">
+    <div class="grid grid--posture">
+      <div class="panel">
+        <div class="panel__header"><span class="panel__title">Security Posture</span></div>
+        <div class="gauge-wrap">
+          <div class="gauge" id="gauge"></div>
+          <div class="gauge__caption" id="gaugeCaption">Run a scan to calculate your account's posture score.</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel__header"><span class="panel__title">Findings by Severity</span></div>
+        <div class="severity-strip" id="severityStrip"></div>
+        <div class="panel__header" style="border-top:1px solid var(--border-soft);">
+          <span class="panel__title">Score by Resource Category</span>
+        </div>
+        <div class="service-bars" id="serviceBars"></div>
+      </div>
+    </div>
+
+    <div class="grid grid--stats">
+      <div class="stat-card"><div class="stat-card__value" id="statTotalScans">0</div><div class="stat-card__label">Total Scans</div></div>
+      <div class="stat-card"><div class="stat-card__value" id="statOpenFindings">0</div><div class="stat-card__label">Open Findings</div></div>
+      <div class="stat-card"><div class="stat-card__value" id="statCritical">0</div><div class="stat-card__label">Critical</div></div>
+      <div class="stat-card"><div class="stat-card__value" id="statLastScan">—</div><div class="stat-card__label">Last Scan</div></div>
+      <div class="stat-card"><div class="stat-card__value" id="statDuration">—</div><div class="stat-card__label">Scan Duration</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__header"><span class="panel__title">Top Findings</span></div>
+      <div id="topFindingsBody"></div>
+    </div>
+  </section>
+
+  <!-- ============ FINDINGS VIEW ============ -->
+  <section class="view" id="view-findings">
+    <div class="panel">
+      <div class="toolbar">
+        <input type="text" id="findingSearch" placeholder="Search findings by title or resource…">
+        <select id="severityFilter">
+          <option value="">All severities</option>
+          <option value="critical">Critical</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+          <option value="info">Info</option>
+        </select>
+        <select id="resourceFilter">
+          <option value="">All resource types</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="findings">
+          <thead>
+            <tr>
+              <th style="width:90px;">Severity</th>
+              <th>Finding</th>
+              <th style="width:220px;">Resource</th>
+              <th style="width:150px;">Compliance</th>
+              <th style="width:140px;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="findingsTableBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="findingsEmpty" style="display:none;">
+        <h3>No findings match your filters</h3>
+        <p>Try clearing the search or severity filter.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPLIANCE VIEW ============ -->
+  <section class="view" id="view-compliance">
+    <div class="panel">
+      <div class="panel__header">
+        <span class="panel__title">CIS AWS Foundations Benchmark v3.0 — Control Coverage</span>
+      </div>
+      <div class="compliance-grid" id="complianceGrid"></div>
+    </div>
+  </section>
+
+  <div class="footer-note">CloudGuard v1.0.0 · Findings are point-in-time · Re-scan regularly to track posture drift</div>
+</main>
+
+<script src="/static/js/gauge.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
