@@ -106,6 +106,9 @@ cloudguard/
 └── .env.example
 ```
 
+<img width="1918" height="960" alt="image" src="https://github.com/user-attachments/assets/e88bdf38-377e-4589-99fc-ae3d997808b1" />
+
+
 ## Tech stack
 
 Python 3.12 · FastAPI · SQLAlchemy · SQLite (swappable for PostgreSQL) ·
