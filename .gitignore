@@ -14,10 +14,9 @@ env/
 
 # Environment / secrets
 .env
-backend/.env
-.env
 .env.*
 !.env.example
+backend/.env
 
 # AWS credentials
 .aws/
@@ -28,34 +27,24 @@ credentials
 # Database
 *.db
 *.sqlite3
-cloudguard.db
 
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # IDE
 .vscode/
 .idea/
 *.swp
 
-# Reports generated at runtime
+# Runtime reports
 *.report.html
 *.report.json
 
 # Logs
 *.log
 logs/
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-# OS
-.DS_Store
-Thumbs.db
-desktop.ini
 
 # Temporary files
 *.tmp
@@ -64,4 +53,3 @@ desktop.ini
 
 # Node
 node_modules/
-
