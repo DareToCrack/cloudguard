@@ -33,6 +33,13 @@ class Settings(BaseSettings):
     aws_profile: str | None = None
     aws_default_region: str = "us-east-1"
 
+    # -- azure ----------------------------------------------------------
+    # Subscription to scan in live mode. If unset, CloudGuard uses the
+    # first subscription visible to the credential. Live Azure scanning
+    # uses azure-identity's DefaultAzureCredential chain (service
+    # principal env vars, Azure CLI login, managed identity).
+    azure_subscription_id: str | None = None
+
     # -- scanning ---------------------------------------------------------
     scan_regions: str = "us-east-1,us-west-2"   # comma-separated
     findings_retention_days: int = 365

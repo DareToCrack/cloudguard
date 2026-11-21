@@ -63,6 +63,7 @@ class RiskScoreResult:
     raw_penalty: float
     severity_counts: dict[str, int] = field(default_factory=dict)
     service_scores: dict[str, int] = field(default_factory=dict)
+    provider_scores: dict[str, int] = field(default_factory=dict)
     total_findings: int = 0
 
     def to_dict(self) -> dict:
@@ -72,6 +73,7 @@ class RiskScoreResult:
             "raw_penalty": round(self.raw_penalty, 2),
             "severity_counts": self.severity_counts,
             "service_scores": self.service_scores,
+            "provider_scores": self.provider_scores,
             "total_findings": self.total_findings,
         }
 
@@ -129,12 +131,24 @@ def calculate_risk_score(findings: list[Finding]) -> RiskScoreResult:
     for service, service_findings in by_service.items():
         service_scores[service] = _score_from_penalty(_weighted_penalty(service_findings))
 
+    # Per-provider breakdown: same model applied to each cloud provider's
+    # findings, so a dashboard can show "AWS: 71, Azure: 58" alongside the
+    # overall score. A provider with no open findings scores 100.
+    by_provider: dict[str, list[Finding]] = {}
+    for f in open_findings:
+        by_provider.setdefault(f.provider.value, []).append(f)
+
+    provider_scores: dict[str, int] = {}
+    for provider, provider_findings in by_provider.items():
+        provider_scores[provider] = _score_from_penalty(_weighted_penalty(provider_findings))
+
     return RiskScoreResult(
         score=score,
         grade=_grade_from_score(score),
         raw_penalty=raw_penalty,
         severity_counts=severity_counts,
         service_scores=service_scores,
+        provider_scores=provider_scores,
         total_findings=len(open_findings),
     )
 

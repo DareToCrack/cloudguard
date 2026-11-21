@@ -52,7 +52,7 @@ $('#scanBtn').addEventListener('click', async () => {
   try {
     const scan = await api('/scans/sync', {
       method: 'POST',
-      body: JSON.stringify({ region: 'us-east-1' }),
+      body: JSON.stringify({ region: 'us-east-1', provider: $('#scanProvider').value }),
     });
     state.latestScan = scan;
     await loadAll();
@@ -86,7 +86,7 @@ async function loadDashboard() {
 
   const scan = dash.latest_scan;
   $('#modePill').textContent = scan.mode.toUpperCase() + ' MODE';
-  $('#modePill').className = 'mode-pill ' + (scan.mode === 'live' ? 'mode-pill--live' : 'mode-pill--demo');
+  $('#modePill').className = 'mode-pill mode-pill--' + scan.mode;
 
   renderGauge($('#gauge'), scan.risk_score, scan.risk_grade);
   $('#gaugeCaption').textContent =
@@ -104,6 +104,17 @@ async function loadDashboard() {
       <div class="sev-chip__count" style="color:${SEVERITY_COLORS[sev]}">${(scan.severity_counts || {})[sev] || 0}</div>
       <div class="sev-chip__label">${sev}</div>
     </div>`).join('');
+
+  // provider bars
+  const providers = Object.entries(scan.provider_scores || {}).sort((a, b) => a[1] - b[1]);
+  $('#providerBars').innerHTML = providers.map(([provider, score]) => {
+    const color = score >= 80 ? 'var(--grade-a)' : score >= 60 ? 'var(--grade-c)' : 'var(--grade-f)';
+    return `<div class="service-bar-row">
+      <div class="label">${provider.toUpperCase()}</div>
+      <div class="service-bar-track"><div class="service-bar-fill" style="width:${score}%;background:${color}"></div></div>
+      <div class="val">${score}</div>
+    </div>`;
+  }).join('') || '<div class="empty-state"><p>No provider data yet.</p></div>';
 
   // service bars
   const services = Object.entries(scan.service_scores || {}).sort((a, b) => a[1] - b[1]);
@@ -125,7 +136,9 @@ async function loadDashboard() {
 }
 
 function severityBadge(sev) {
-  return `<span class="badge" style="background:${SEVERITY_COLORS[sev]}">${sev}</span>`;
+  // Medium's amber is too light for white text.
+  const text = sev === 'medium' ? '#22262b' : '#ffffff';
+  return `<span class="badge" style="background:${SEVERITY_COLORS[sev]};color:${text}">${sev}</span>`;
 }
 
 function rowHtml(f) {
@@ -140,6 +153,7 @@ function rowHtml(f) {
     <td>
       <div class="resource-id">${escapeHtml(f.resource_name)}</div>
       <div class="region-tag">${escapeHtml(f.region)}</div>
+      <span class="provider-tag">${escapeHtml((f.provider || 'aws').toUpperCase())}</span>
     </td>
     <td>${compliance || '<span class="region-tag">—</span>'}</td>
     <td>
@@ -159,6 +173,13 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+function shortFramework(framework) {
+  if (!framework) return '';
+  if (framework.includes('Azure')) return 'CIS Azure v3.0.0';
+  if (framework.includes('AWS')) return 'CIS AWS v3.0';
+  return framework;
+}
+
 async function loadFindings() {
   const findings = await api('/findings?limit=1000');
   state.findings = findings;
@@ -174,10 +195,12 @@ async function loadFindings() {
 function renderFindingsTable() {
   const search = $('#findingSearch').value.toLowerCase();
   const sevFilter = $('#severityFilter').value;
+  const providerFilter = $('#providerFilter').value;
   const typeFilter = $('#resourceFilter').value;
 
   const filtered = state.findings.filter(f => {
     if (sevFilter && f.severity !== sevFilter) return false;
+    if (providerFilter && (f.provider || 'aws') !== providerFilter) return false;
     if (typeFilter && f.resource_type !== typeFilter) return false;
     if (search && !(`${f.title} ${f.resource_name}`.toLowerCase().includes(search))) return false;
     return true;
@@ -198,7 +221,7 @@ function renderFindingsTable() {
   });
 }
 
-['findingSearch', 'severityFilter', 'resourceFilter'].forEach(id => {
+['findingSearch', 'severityFilter', 'providerFilter', 'resourceFilter'].forEach(id => {
   $('#' + id).addEventListener('input', renderFindingsTable);
 });
 
@@ -208,7 +231,7 @@ async function loadCompliance() {
   $('#complianceGrid').innerHTML = data.controls.length
     ? data.controls.map(c => `
       <div class="control-row" style="border-left-color:${SEVERITY_COLORS[c.highest_severity]}">
-        <div class="control-id">${c.control_id}</div>
+        <div class="control-id">${c.control_id}<span class="framework-tag">${escapeHtml(shortFramework(c.framework))}</span></div>
         <div class="control-title">${escapeHtml(c.control_title)}</div>
         <div>${severityBadge(c.highest_severity)}</div>
         <div class="count">${c.open_findings} open</div>

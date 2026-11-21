@@ -20,10 +20,12 @@ def list_findings(
     resource_type: str | None = None,
     search: str | None = None,
     limit: int = 500,
+    provider: str | None = None,
     db: Session = Depends(get_db),
 ):
     return repository.list_open_findings(
-        db, severity=severity, resource_type=resource_type, search=search, limit=limit
+        db, severity=severity, resource_type=resource_type, search=search,
+        limit=limit, provider=provider,
     )
 
 

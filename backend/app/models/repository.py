@@ -24,6 +24,7 @@ def save_scan_report(db: Session, report: ScanReport) -> None:
         total_findings=report.risk.total_findings if report.risk else len(report.findings),
         severity_counts=report.risk.severity_counts if report.risk else {},
         service_scores=report.risk.service_scores if report.risk else {},
+        provider_scores=report.risk.provider_scores if report.risk else {},
         scanner_errors=report.scanner_errors,
     )
     db.add(scan_row)
@@ -50,6 +51,7 @@ def save_scan_report(db: Session, report: ScanReport) -> None:
             description=f.description,
             severity=f.severity.value,
             severity_weight=f.severity.weight,
+            provider=f.provider.value,
             resource_type=f.resource_type.value,
             resource_id=f.resource_id,
             resource_name=f.resource_name,
@@ -87,13 +89,15 @@ def list_findings_for_scan(db: Session, scan_id: str) -> list[FindingRecord]:
 
 def list_open_findings(
     db: Session, severity: str | None = None, resource_type: str | None = None,
-    search: str | None = None, limit: int = 500,
+    search: str | None = None, limit: int = 500, provider: str | None = None,
 ) -> list[FindingRecord]:
     query = db.query(FindingRecord).filter(FindingRecord.status == "open")
     if severity:
         query = query.filter(FindingRecord.severity == severity)
     if resource_type:
         query = query.filter(FindingRecord.resource_type == resource_type)
+    if provider:
+        query = query.filter(FindingRecord.provider == provider)
     if search:
         like = f"%{search}%"
         query = query.filter(

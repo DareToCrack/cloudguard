@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from app.scanners.base import AWSSessionManager  # noqa: E402
+from app.scanners.base import AWSSessionManager, AzureSessionManager  # noqa: E402
 
 
 class FakeDemoSessionManager(AWSSessionManager):
@@ -24,6 +24,23 @@ class FakeDemoSessionManager(AWSSessionManager):
         return False
 
 
+class FakeAzureDemoSessionManager(AzureSessionManager):
+    """Forces demo-mode (is_live == False) regardless of environment,
+    so unit tests never accidentally hit a real Azure subscription."""
+
+    def __init__(self):
+        super().__init__(subscription_id="test-subscription-id")
+
+    @property
+    def is_live(self) -> bool:
+        return False
+
+
 @pytest.fixture
 def demo_session():
     return FakeDemoSessionManager()
+
+
+@pytest.fixture
+def azure_demo_session():
+    return FakeAzureDemoSessionManager()

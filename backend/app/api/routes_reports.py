@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
 from sqlalchemy.orm import Session
 
-from app.core.enums import FindingStatus, ResourceType, Severity
+from app.core.enums import CloudProvider, FindingStatus, ResourceType, Severity
 from app.core.finding import ComplianceMapping, Finding
 from app.core.orchestrator import ScanReport
 from app.core.risk_engine import calculate_risk_score
@@ -32,6 +32,7 @@ def _scan_report_from_db(db: Session, scan_id: str) -> ScanReport:
             title=r.title,
             description=r.description,
             severity=Severity(r.severity),
+            provider=CloudProvider(getattr(r, "provider", None) or "aws"),
             resource_type=ResourceType(r.resource_type),
             resource_id=r.resource_id,
             resource_name=r.resource_name,

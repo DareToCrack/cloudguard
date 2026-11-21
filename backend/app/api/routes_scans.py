@@ -22,13 +22,19 @@ router = APIRouter(prefix="/api/scans", tags=["scans"])
 _SCAN_STATE: dict[str, str] = {}
 
 
-def _run_scan_background(scan_id: str, region: str, profile: str | None) -> None:
+def _run_scan_background(
+    scan_id: str, region: str, profile: str | None,
+    provider: str, azure_subscription_id: str | None,
+) -> None:
     from app.models.database import SessionLocal
 
     _SCAN_STATE[scan_id] = "running"
     db = SessionLocal()
     try:
-        orchestrator = ScanOrchestrator(profile=profile, region=region)
+        orchestrator = ScanOrchestrator(
+            profile=profile, region=region, provider=provider,
+            azure_subscription_id=azure_subscription_id,
+        )
         report = orchestrator.run_full_scan(scan_id)
         repository.save_scan_report(db, report)
         _SCAN_STATE[scan_id] = "completed"
@@ -43,7 +49,10 @@ def _run_scan_background(scan_id: str, region: str, profile: str | None) -> None
 def trigger_scan(payload: ScanTriggerRequest, background_tasks: BackgroundTasks):
     scan_id = str(uuid.uuid4())
     _SCAN_STATE[scan_id] = "pending"
-    background_tasks.add_task(_run_scan_background, scan_id, payload.region, payload.aws_profile)
+    background_tasks.add_task(
+        _run_scan_background, scan_id, payload.region, payload.aws_profile,
+        payload.provider, payload.azure_subscription_id,
+    )
     return ScanTriggerResponse(
         scan_id=scan_id, status="pending",
         message="Scan started. Poll GET /api/scans/{scan_id} for status.",
@@ -58,7 +67,11 @@ def trigger_scan_sync(payload: ScanTriggerRequest, db: Session = Depends(get_db)
     in well under a second.
     """
     scan_id = str(uuid.uuid4())
-    orchestrator = ScanOrchestrator(profile=payload.aws_profile, region=payload.region)
+    orchestrator = ScanOrchestrator(
+        profile=payload.aws_profile, region=payload.region,
+        provider=payload.provider,
+        azure_subscription_id=payload.azure_subscription_id,
+    )
     report = orchestrator.run_full_scan(scan_id)
     repository.save_scan_report(db, report)
     row = repository.get_scan(db, scan_id)

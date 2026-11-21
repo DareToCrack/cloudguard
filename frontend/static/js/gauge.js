@@ -5,8 +5,8 @@
  * prefers-reduced-motion via the CSS layer.
  */
 function renderGauge(container, score, grade) {
-  const gradeColors = { A: '#22c55e', B: '#84cc16', C: '#e0ab13', D: '#f2760c', F: '#ef4444' };
-  const color = gradeColors[grade] || '#5d7290';
+  const gradeColors = { A: '#15803d', B: '#4d7c0f', C: '#d9a441', D: '#b45309', F: '#b91c1c' };
+  const color = gradeColors[grade] || '#667085';
 
   const size = 220;
   const cx = size / 2;

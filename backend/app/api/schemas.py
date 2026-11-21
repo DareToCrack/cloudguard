@@ -21,6 +21,7 @@ class FindingOut(BaseModel):
     description: str
     severity: str
     severity_weight: int
+    provider: str = "aws"
     resource_type: str
     resource_id: str
     resource_name: str
@@ -41,6 +42,7 @@ class RiskSummaryOut(BaseModel):
     grade: str
     severity_counts: dict[str, int]
     service_scores: dict[str, int]
+    provider_scores: dict[str, int] = {}
     total_findings: int
 
 
@@ -56,6 +58,7 @@ class ScanSummaryOut(BaseModel):
     total_findings: int
     severity_counts: dict
     service_scores: dict
+    provider_scores: dict = {}
     scanner_errors: dict
 
     class Config:
@@ -65,6 +68,8 @@ class ScanSummaryOut(BaseModel):
 class ScanTriggerRequest(BaseModel):
     region: str = Field(default="us-east-1")
     aws_profile: str | None = None
+    provider: str = Field(default="all", pattern="^(all|aws|azure)$")
+    azure_subscription_id: str | None = None
 
 
 class ScanTriggerResponse(BaseModel):

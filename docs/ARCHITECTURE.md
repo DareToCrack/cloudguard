@@ -9,34 +9,42 @@ it. A standalone CLI shares the same core scanning/scoring code as the
 API, so there is exactly one implementation of every check.
 
 ```
-                    ┌──────────────────────────────┐
-                    │   AWS Account (or demo data)  │
-                    └───────────────┬──────────────┘
-                                    │ boto3 (or synthetic fallback)
-                    ┌───────────────▼──────────────┐
-                    │        Scanner Modules         │
-                    │  S3 · IAM · SG · RDS · CT · EBS │
-                    └───────────────┬──────────────┘
-                                    │ list[Finding]
-                    ┌───────────────▼──────────────┐
-                    │      Scan Orchestrator          │
-                    └───────────────┬──────────────┘
-                                    │
-                    ┌───────────────▼──────────────┐
-                    │       Risk Scoring Engine       │
-                    └───────────────┬──────────────┘
-                                    │ ScanReport
-                    ┌───────────────▼──────────────┐
+         ┌────────────────────────┐        ┌────────────────────────┐
+         │  AWS Account           │        │  Azure Subscription     │
+         │  (or AWS demo data)     │        │  (or Azure demo data)   │
+         └────────────┬───────────┘        └────────────┬───────────┘
+                      │ boto3                           │ Azure SDK
+                      │ (or synthetic fallback)         │ (or synthetic fallback)
+         ┌────────────▼───────────┐        ┌────────────▼───────────┐
+         │  AWS Scanner Modules    │        │  Azure Scanner Modules  │
+         │  S3 · IAM · SG · RDS    │        │  Storage · NSG · RBAC   │
+         │  CloudTrail · EBS       │        │  SQL · Key Vault · Disk │
+         └────────────┬───────────┘        └────────────┬───────────┘
+                      │ list[Finding]                   │ list[Finding]
+                      └────────────┬────────────────────┘
+                    ┌──────────────▼───────────────┐
+                    │      Scan Orchestrator        │
+                    │  (provider selection: all /   │
+                    │   aws / azure)                │
+                    └──────────────┬───────────────┘
+                                   │
+                    ┌──────────────▼───────────────┐
+                    │       Risk Scoring Engine     │
+                    │  overall + per-provider +     │
+                    │  per-service scores           │
+                    └──────────────┬───────────────┘
+                                   │ ScanReport
+                    ┌──────────────▼───────────────┐
                     │   Repository Layer (SQLAlchemy) │
                     │        SQLite / PostgreSQL      │
-                    └───────────────┬──────────────┘
-                                    │
-                ┌───────────────────┼───────────────────┐
-                │                   │                   │
-        ┌───────▼──────┐   ┌────────▼───────┐   ┌───────▼──────┐
-        │   REST API    │   │  HTML Report    │   │      CLI      │
-        │   (FastAPI)   │   │   Generator     │   │ (bypasses API) │
-        └───────┬──────┘   └────────────────┘   └──────────────┘
+                    └──────────────┬───────────────┘
+                                   │
+                ┌──────────────────┼───────────────────┐
+                │                  │                   │
+        ┌───────▼──────┐  ┌────────▼───────┐  ┌───────▼──────┐
+        │   REST API    │  │  HTML Report    │  │      CLI      │
+        │   (FastAPI)   │  │   Generator     │  │ (bypasses API) │
+        └───────┬──────┘  └────────────────┘  └──────────────┘
                 │
         ┌───────▼──────┐
         │  Dashboard UI │
@@ -49,8 +57,11 @@ API, so there is exactly one implementation of every check.
 Every check produces a `Finding` (`backend/app/core/finding.py`) — the one
 canonical unit that flows through the entire system. A `Finding` carries:
 
-- `check_id` — a stable identifier (e.g. `S3_PUBLIC_WRITE`)
+- `check_id` — a stable identifier (e.g. `S3_PUBLIC_WRITE`,
+  `AZ_STORAGE_PUBLIC_BLOB`)
 - `severity` — one of `info | low | medium | high | critical`
+- `provider` — `aws` or `azure` (`CloudProvider` enum; GCP is a
+  placeholder for a future provider)
 - resource identity (`resource_type`, `resource_id`, `resource_name`, `region`)
 - human-readable `title`/`description`/`remediation`
 - `evidence` — the raw data that triggered the finding, for audit purposes
@@ -67,30 +78,55 @@ IAM specifically, they only know about `Finding`.
 
 Each scanner (`backend/app/scanners/*.py`) subclasses `BaseScanner` and
 implements `run() -> list[Finding]`. Scanners are intentionally
-self-contained: given an `AWSSessionManager`, each one is independently
-testable and independently useful.
+self-contained: given a session manager, each one is independently
+testable and independently useful. Each scanner class declares which
+provider it belongs to (`provider = "aws"` / `"azure"`), and the
+orchestrator hands it the matching session manager.
+
+There are 12 scanner modules: 6 AWS (S3, IAM, EC2 Security Groups, RDS,
+CloudTrail, EBS) and 6 Azure (Storage Accounts, Network Security Groups,
+RBAC authorization, SQL Servers, Key Vaults, Managed Disks), for 42
+checks in total. The orchestrator can run all of them or just one
+provider (`provider` parameter: `all` / `aws` / `azure`).
 
 ### Live vs. demo mode
 
-`AWSSessionManager` (`backend/app/scanners/base.py`) attempts to resolve a
-real boto3 session and validates it with a cheap `sts:GetCallerIdentity`
-call. If that fails for any reason (no credentials, expired token, no
-boto3 installed at all), `is_live` is `False` and every scanner
-transparently falls back to a synthetic dataset defined in
-`app/scanners/demo_data.py`.
+Each provider resolves live/demo independently:
+
+- **AWS** — `AWSSessionManager` (`backend/app/scanners/base.py`) attempts
+  to resolve a real boto3 session and validates it with a cheap
+  `sts:GetCallerIdentity` call. If that fails for any reason (no
+  credentials, expired token, no boto3 installed at all), `is_live` is
+  `False` and every AWS scanner transparently falls back to a synthetic
+  dataset defined in `app/scanners/demo_data.py`.
+- **Azure** — `AzureSessionManager` (same module) first checks for any
+  *signal* that a credential might exist (service-principal env vars,
+  the `az` CLI, or a reachable instance metadata endpoint). If there is
+  none, it goes straight to demo mode without invoking the
+  `DefaultAzureCredential` chain, which can otherwise take seconds to
+  fail in a credential-less environment. If a signal exists, it validates
+  the credential with a token request for the management-plane scope and
+  resolves the subscription (explicit `AZURE_SUBSCRIPTION_ID`, or the
+  first visible subscription). On any failure it falls back to the
+  synthetic dataset in `app/scanners/azure_demo_data.py`.
+
+The overall scan mode is `live` when every selected provider is live,
+`demo` when none is, and `mixed` when some are live and some fell back
+to demo data.
 
 This is the single most important architectural decision in the project:
 **the exact same check logic runs in both modes.** `_evaluate_bucket()`,
-`_evaluate_group()`, etc. don't know or care whether their input came from
-`boto3` or from a Python dict literal — they operate on the same shape of
-data either way. This means:
+`_evaluate_account()`, `_evaluate_nsg()`, etc. don't know or care
+whether their input came from `boto3`/the Azure SDK or from a Python dict
+literal — they operate on the same shape of data either way. This means:
 
-- The project can be cloned and run with zero AWS setup and still produce
-  a fully realistic, varied set of findings.
+- The project can be cloned and run with zero cloud setup and still produce
+  a fully realistic, varied set of findings for both providers.
 - There's no "fake" scanning logic to throw away later — pointing this at
-  a real account is a configuration change (AWS credentials), not a code
+  a real account is a configuration change (credentials), not a code
   change.
-- The demo dataset (`demo_data.py`) doubles as a set of test fixtures.
+- The demo datasets (`demo_data.py`, `azure_demo_data.py`) double as test
+  fixtures.
 
 ## Risk scoring model
 
@@ -121,7 +157,9 @@ See `backend/app/core/risk_engine.py`. The design goals were:
 Per-service scores (`service_scores` in the API/dashboard) apply the exact
 same formula to the subset of findings for that resource type, so a
 dashboard can show "S3: 30, IAM: 53, RDS: 60, ..." rather than one opaque
-number.
+number. Per-provider scores (`provider_scores`) do the same per cloud
+provider ("AWS: 71, Azure: 58"), so a weak provider can't hide behind a
+strong one — or vice versa.
 
 ## Persistence & finding lifecycle
 
@@ -166,27 +204,32 @@ glance.
 
 ## Testing strategy
 
-40 tests across three layers:
+69 tests across four layers:
 
-- **Scanner unit tests** (`test_scanners.py`) — assert specific checks
-  fire (and specific non-issues do *not* fire false positives) against the
-  demo dataset.
+- **Scanner unit tests** (`test_scanners.py`, `test_azure.py`) — assert
+  specific checks fire (and specific non-issues do *not* fire false
+  positives) against the demo datasets, for both providers. The Azure
+  tests also cover the live-fetch normalisation with mocked SDK clients,
+  provider filtering, per-provider scoring, and the demo-mode fallback.
 - **Risk engine unit tests** (`test_risk_engine.py`) — verify the scoring
   formula's properties directly (monotonicity, diminishing returns,
   boundary conditions) independent of any scanner.
+- **Orchestrator tests** (`test_orchestrator.py`) — end-to-end demo scans,
+  serialisation, and finding-idempotence across repeated scans.
 - **API integration tests** (`test_api.py`) — exercise the full FastAPI
   app + SQLite persistence layer via `TestClient`, using an isolated
-  temporary database per test session.
+  temporary database per test session, including provider-scoped scans
+  and provider filtering.
 
-All 40 tests run with zero external dependencies (no AWS account, no
-network) in under 15 seconds, which is what makes them suitable for CI.
+All 69 tests run with zero external dependencies (no cloud account, no
+network), which is what makes them suitable for CI.
 
-## Why AWS-only (for now)
+## Multi-cloud status
 
-Multi-cloud CSPM tools commonly become a mile wide and an inch deep -
-shallow checks across three providers instead of substantive checks
-against one. `CloudProvider` is already an enum with `AZURE`/`GCP`
-placeholders, and the scanner interface (`BaseScanner`) has no AWS-specific
-assumptions baked into its contract - so adding a provider is additive
-(new scanner classes + a new `SessionManager`), not a rewrite. See
+CloudGuard now scans AWS and Azure. The provider model was designed for
+this from the start: `Finding` carries a `provider` field, each scanner
+declares its provider, the orchestrator runs per-provider registries, and
+scoring/reporting are provider-aware. Adding a third provider (GCP is the
+placeholder in the `CloudProvider` enum) is additive — new scanner
+classes + a new session manager — not a rewrite. See
 `docs/FUTURE_WORK.md`.

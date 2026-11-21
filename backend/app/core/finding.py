@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from app.core.enums import FindingStatus, ResourceType, Severity
+from app.core.enums import CloudProvider, FindingStatus, ResourceType, Severity
 
 
 @dataclass
@@ -42,6 +42,7 @@ class Finding:
     compliance: list[ComplianceMapping] = field(default_factory=list)
     references: list[str] = field(default_factory=list)
     status: FindingStatus = FindingStatus.OPEN
+    provider: CloudProvider = CloudProvider.AWS
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     discovered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     fingerprint: str = field(init=False)
@@ -61,6 +62,7 @@ class Finding:
             "description": self.description,
             "severity": self.severity.value,
             "severity_weight": self.severity.weight,
+            "provider": self.provider.value,
             "resource_type": self.resource_type.value,
             "resource_id": self.resource_id,
             "resource_name": self.resource_name,

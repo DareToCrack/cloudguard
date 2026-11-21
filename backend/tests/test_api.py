@@ -106,6 +106,33 @@ def test_compliance_summary_endpoint():
     assert "controls" in resp.json()
 
 
+def test_sync_scan_with_azure_provider_only():
+    resp = client.post("/api/scans/sync", json={"region": "us-east-1", "provider": "azure"})
+    assert resp.status_code == 201
+    body = resp.json()
+    assert body["total_findings"] > 0
+    assert set(body["provider_scores"]) == {"azure"}
+
+    findings = client.get(f"/api/scans/{body['id']}/findings").json()
+    assert findings
+    assert all(f["provider"] == "azure" for f in findings)
+
+
+def test_sync_scan_with_invalid_provider_rejected():
+    resp = client.post("/api/scans/sync", json={"region": "us-east-1", "provider": "gcp"})
+    assert resp.status_code == 422
+
+
+def test_findings_endpoint_filters_by_provider():
+    client.post("/api/scans/sync", json={"region": "us-east-1", "provider": "all"})
+    resp = client.get("/api/findings?provider=azure&limit=1000")
+    assert resp.status_code == 200
+    findings = resp.json()
+    assert findings
+    assert all(f["provider"] == "azure" for f in findings)
+    assert any(f["check_id"].startswith("AZ_") for f in findings)
+
+
 @pytest.fixture(scope="session", autouse=True)
 def cleanup():
     yield

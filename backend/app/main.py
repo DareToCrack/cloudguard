@@ -34,7 +34,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="CloudGuard API",
     description="Cloud Security Posture Management (CSPM) REST API",
-    version="1.0.0",
+    version="1.1.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json",
@@ -66,7 +66,7 @@ async def add_security_headers_and_timing(request: Request, call_next):
 
 @app.get("/api/health", tags=["meta"])
 def health_check():
-    return {"status": "ok", "app": settings.app_name, "version": "1.0.0", "environment": settings.environment}
+    return {"status": "ok", "app": settings.app_name, "version": "1.1.0", "environment": settings.environment}
 
 
 app.include_router(scans_router)

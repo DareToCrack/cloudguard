@@ -17,9 +17,9 @@
 .brand { display: flex; align-items: center; gap: 10px; }
 .brand__mark {
   width: 30px; height: 30px; border-radius: var(--radius-sm);
-  background: conic-gradient(from 220deg, var(--accent), var(--accent-dim), var(--accent));
+  background: var(--accent);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-weight: 700; color: var(--bg-base); font-size: 15px;
+  font-family: var(--font-display); font-weight: 700; color: #ffffff; font-size: 15px;
 }
 .brand__name { font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
 .brand__name em { font-style: normal; color: var(--accent); }
@@ -32,9 +32,13 @@
   padding: 7px 14px; border-radius: var(--radius-md); cursor: pointer;
 }
 .nav button:hover { color: var(--text-primary); background: var(--bg-panel-raised); }
-.nav button.active { color: var(--bg-base); background: var(--accent); font-weight: 600; }
+.nav button.active { color: #ffffff; background: var(--accent); font-weight: 600; }
 
 .topbar__actions { display: flex; align-items: center; gap: 10px; }
+.topbar__actions select {
+  background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-primary);
+  border-radius: var(--radius-md); padding: 8px 10px; font-family: var(--font-body); font-size: 13px;
+}
 
 .btn {
   font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
@@ -44,8 +48,8 @@
 }
 .btn:hover { border-color: var(--accent-dim); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn--primary { background: var(--accent); border-color: var(--accent); color: #04211f; }
-.btn--primary:hover { background: #45d6cf; }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+.btn--primary:hover { background: var(--accent-dim); }
 .btn--ghost { background: transparent; }
 
 .mode-pill {
@@ -53,8 +57,9 @@
   padding: 4px 9px; border-radius: 20px; border: 1px solid var(--border);
   color: var(--text-secondary);
 }
-.mode-pill--demo { color: #e0ab13; border-color: #4a3c14; background: rgba(224,171,19,0.08); }
-.mode-pill--live { color: var(--grade-a); border-color: #1c4a2c; background: rgba(34,197,94,0.08); }
+.mode-pill--demo { color: #92400e; border-color: #fde68a; background: #fef3c7; }
+.mode-pill--live { color: #15803d; border-color: #bbf7d0; background: #f0fdf4; }
+.mode-pill--mixed { color: #1e3a5f; border-color: #bfdbfe; background: #eff6ff; }
 
 main { max-width: 1280px; margin: 0 auto; padding: 28px; }
 
@@ -130,7 +135,10 @@ table.findings { width: 100%; border-collapse: collapse; }
 table.findings th {
   text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--text-muted); padding: 10px 20px; border-bottom: 1px solid var(--border-soft);
-  position: sticky; top: 57px; background: var(--bg-panel);
+  /* NOTE: the table sits inside an overflow-x:auto wrapper, which makes it
+     the sticky containing block — a top offset here pushes the header down
+     over the first data row. top:0 keeps it in its natural position. */
+  position: sticky; top: 0; background: var(--bg-panel);
 }
 table.findings td { padding: 14px 20px; border-bottom: 1px solid var(--border-soft); vertical-align: top; font-size: 13.5px; }
 table.findings tr:hover td { background: var(--bg-panel-raised); }
@@ -141,12 +149,21 @@ table.findings tr:hover td { background: var(--bg-panel-raised); }
 
 .badge {
   display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10.5px;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #04121a;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff;
+}
+.provider-tag {
+  display: inline-block; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--accent); background: var(--accent-glow);
+  border: 1px solid var(--accent-dim); border-radius: 4px; padding: 2px 7px;
+  margin-top: 4px;
 }
 .compliance-tag {
   display: inline-block; font-family: var(--font-mono); font-size: 11px; color: var(--accent);
-  background: rgba(52,201,194,0.08); border: 1px solid var(--accent-dim); border-radius: 4px;
+  background: rgba(37,99,235,0.08); border: 1px solid var(--accent-dim); border-radius: 4px;
   padding: 2px 7px; margin: 2px 3px 0 0;
+}
+.framework-tag {
+  display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px;
 }
 
 .status-select {

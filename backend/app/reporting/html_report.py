@@ -12,21 +12,28 @@ from html import escape
 
 from app.core.orchestrator import ScanReport
 
+# Shared light palette (same as the dashboard): softened but distinct.
 SEVERITY_COLORS = {
-    "critical": "#dc2626",
-    "high": "#ea580c",
-    "medium": "#d97706",
+    "critical": "#b91c1c",
+    "high": "#b45309",
+    "medium": "#d9a441",
     "low": "#2563eb",
-    "info": "#6b7280",
+    "info": "#667085",
 }
 
-GRADE_COLORS = {"A": "#16a34a", "B": "#65a30d", "C": "#d97706", "D": "#ea580c", "F": "#dc2626"}
+GRADE_COLORS = {"A": "#15803d", "B": "#4d7c0f", "C": "#d9a441", "D": "#b45309", "F": "#b91c1c"}
+
+
+def _severity_text_color(severity: str) -> str:
+    # Medium's amber is too light for white text.
+    return "#22262b" if severity == "medium" else "#ffffff"
 
 
 def _severity_badge(severity: str) -> str:
-    color = SEVERITY_COLORS.get(severity, "#6b7280")
+    color = SEVERITY_COLORS.get(severity, "#667085")
     return (
-        f'<span style="background:{color};color:#fff;padding:2px 10px;border-radius:12px;'
+        f'<span style="background:{color};color:{_severity_text_color(severity)};'
+        f'padding:2px 10px;border-radius:12px;'
         f'font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;">'
         f'{escape(severity)}</span>'
     )
@@ -48,17 +55,26 @@ def generate_html_report(report: ScanReport, account_label: str = "Demo Account"
         <tr>
           <td>{_severity_badge(f.severity.value)}</td>
           <td><strong>{escape(f.title)}</strong><br>
-              <span style="color:#6b7280;font-size:13px;">{escape(f.description)}</span></td>
+              <span style="color:#667085;font-size:13px;">{escape(f.description)}</span></td>
+          <td style="font-size:12px;">{escape(f.provider.value.upper())}</td>
           <td style="font-family:monospace;font-size:12px;">{escape(f.resource_name)}<br>
               <span style="color:#9ca3af;">{escape(f.region)}</span></td>
           <td style="font-size:13px;">{escape(f.remediation)}</td>
-          <td style="font-size:12px;color:#6b7280;">{escape(compliance_str)}</td>
+          <td style="font-size:12px;color:#667085;">{escape(compliance_str)}</td>
         </tr>""")
+
+    provider_rows = "".join(
+        f"""<tr><td>{escape(provider.upper())}</td><td>{score}</td>
+            <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
+            <div style="background:{'#15803d' if score>=80 else '#d9a441' if score>=60 else '#b91c1c'};
+            width:{score}%;height:8px;"></div></div></td></tr>"""
+        for provider, score in sorted((risk.provider_scores or {}).items() if risk else [])
+    )
 
     service_rows = "".join(
         f"""<tr><td>{escape(svc)}</td><td>{score}</td>
             <td><div style="background:#e5e7eb;border-radius:4px;overflow:hidden;width:150px;">
-            <div style="background:{'#16a34a' if score>=80 else '#d97706' if score>=60 else '#dc2626'};
+            <div style="background:{'#15803d' if score>=80 else '#d9a441' if score>=60 else '#b91c1c'};
             width:{score}%;height:8px;"></div></div></td></tr>"""
         for svc, score in (risk.service_scores.items() if risk else [])
     )
@@ -126,6 +142,12 @@ def generate_html_report(report: ScanReport, account_label: str = "Demo Account"
     {severity_summary}
   </div>
 
+  <h2 class="section">Score by Provider</h2>
+  <table>
+    <tr><th>Provider</th><th>Score</th><th></th></tr>
+    {provider_rows}
+  </table>
+
   <h2 class="section">Score by Resource Category</h2>
   <table>
     <tr><th>Category</th><th>Score</th><th></th></tr>
@@ -134,7 +156,7 @@ def generate_html_report(report: ScanReport, account_label: str = "Demo Account"
 
   <h2 class="section">Detailed Findings ({len(findings_sorted)})</h2>
   <table>
-    <tr><th>Severity</th><th>Finding</th><th>Resource</th><th>Remediation</th><th>Compliance</th></tr>
+    <tr><th>Severity</th><th>Finding</th><th>Provider</th><th>Resource</th><th>Remediation</th><th>Compliance</th></tr>
     {''.join(rows)}
   </table>
 

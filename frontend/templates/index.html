@@ -26,6 +26,11 @@
   </nav>
   <div class="topbar__actions">
     <span class="mode-pill" id="modePill">—</span>
+    <select id="scanProvider" title="Cloud provider to scan">
+      <option value="all">All providers</option>
+      <option value="aws">AWS</option>
+      <option value="azure">Azure</option>
+    </select>
     <button class="btn btn--ghost" id="exportBtn">Export report</button>
     <button class="btn btn--primary" id="scanBtn">▶ Run scan</button>
   </div>
@@ -46,6 +51,10 @@
       <div class="panel">
         <div class="panel__header"><span class="panel__title">Findings by Severity</span></div>
         <div class="severity-strip" id="severityStrip"></div>
+        <div class="panel__header" style="border-top:1px solid var(--border-soft);">
+          <span class="panel__title">Score by Provider</span>
+        </div>
+        <div class="service-bars" id="providerBars"></div>
         <div class="panel__header" style="border-top:1px solid var(--border-soft);">
           <span class="panel__title">Score by Resource Category</span>
         </div>
@@ -80,6 +89,11 @@
           <option value="low">Low</option>
           <option value="info">Info</option>
         </select>
+        <select id="providerFilter">
+          <option value="">All providers</option>
+          <option value="aws">AWS</option>
+          <option value="azure">Azure</option>
+        </select>
         <select id="resourceFilter">
           <option value="">All resource types</option>
         </select>
@@ -109,13 +123,13 @@
   <section class="view" id="view-compliance">
     <div class="panel">
       <div class="panel__header">
-        <span class="panel__title">CIS AWS Foundations Benchmark v3.0 — Control Coverage</span>
+        <span class="panel__title">Compliance Control Coverage — CIS AWS v3.0 &amp; CIS Azure v3.0.0</span>
       </div>
       <div class="compliance-grid" id="complianceGrid"></div>
     </div>
   </section>
 
-  <div class="footer-note">CloudGuard v1.0.0 · Findings are point-in-time · Re-scan regularly to track posture drift</div>
+  <div class="footer-note">CloudGuard v1.1.0 · AWS + Azure · Findings are point-in-time · Re-scan regularly to track posture drift</div>
 </main>
 
 <script src="/static/js/gauge.js"></script>

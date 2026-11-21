@@ -8,8 +8,11 @@ Three ways to run CloudGuard, from simplest to most production-like.
 - **pip**
 - Optional: **Docker** + **Docker Compose**, if you'd rather not manage a
   local virtualenv
-- Optional: an **AWS account with read-only credentials**, if you want to
-  scan a real account instead of using the bundled demo data
+- Optional: an **AWS account with read-only credentials** and/or an
+  **Azure subscription with Reader access**, if you want to scan real
+  accounts instead of using the bundled demo data
+- Optional: the **Azure CLI** (`az`), the simplest way to authenticate
+  for live Azure scanning
 
 Nothing else is required — SQLite ships with Python, and the dashboard is
 static HTML/JS with no build step.
@@ -32,9 +35,9 @@ source .venv/bin/activate
 ./scripts/run.sh
 ```
 
-Open **http://localhost:8000**. Click **Run scan** — no AWS account is
-required; CloudGuard automatically detects there are no valid AWS
-credentials and runs against its bundled demo dataset.
+Open **http://localhost:8000**. Click **Run scan** — no cloud account is
+required; CloudGuard automatically detects there are no valid
+credentials and runs against its bundled demo datasets (AWS and Azure).
 
 - Dashboard: `http://localhost:8000/`
 - REST API docs (Swagger UI): `http://localhost:8000/api/docs`
@@ -97,6 +100,7 @@ file without running the dashboard.
 ```bash
 source .venv/bin/activate     # after running scripts/setup.sh once
 python cli/cloudguard_cli.py scan
+python cli/cloudguard_cli.py scan --provider azure
 python cli/cloudguard_cli.py scan --output report.html --format html
 python cli/cloudguard_cli.py scan --output report.json --format json
 python cli/cloudguard_cli.py list-checks
@@ -145,14 +149,56 @@ the scan result / dashboard.
 
 ---
 
+## Scanning a real Azure subscription
+
+By default, CloudGuard scans Azure in **demo mode** too. To scan a real
+subscription, authenticate via any mechanism `azure-identity`'s
+`DefaultAzureCredential` supports:
+
+**Azure CLI (simplest for local use):**
+```bash
+az login
+az account set --subscription <subscription-id>   # if you have several
+./scripts/run.sh
+```
+
+**Service principal (for servers / CI):**
+```bash
+export AZURE_TENANT_ID=...
+export AZURE_CLIENT_ID=...        # application (client) ID
+export AZURE_CLIENT_SECRET=...
+export AZURE_SUBSCRIPTION_ID=...  # optional: defaults to the first visible subscription
+./scripts/run.sh
+```
+
+**Managed identity (when running on Azure):** no configuration needed —
+assign the Reader role to the VM / App Service identity at subscription
+scope and CloudGuard picks it up automatically. Note that a
+system-assigned managed identity is only auto-detected when the instance
+metadata endpoint is reachable from the process; see
+[`SECURITY.md`](SECURITY.md#azure-permissions) for details.
+
+**Required Azure permissions:** the built-in **Reader** role at
+subscription scope is sufficient — CloudGuard only calls read-only ARM
+`list`/`get` operations. See
+[`SECURITY.md`](SECURITY.md#azure-permissions) for the exact
+actions and how to assign the role.
+
+To scan only Azure from the dashboard, pick **Azure** in the provider
+dropdown next to **Run scan**; from the CLI, use
+`--provider azure`. If Azure credentials are valid but AWS credentials
+are not (or vice versa), the scan runs in **mixed** mode — live for one
+provider, demo for the other — and the mode pill says so.
+
+---
+
 ## Verifying the installation
 
 ```bash
 ./scripts/test.sh
 ```
 
-Expected output: `40 passed` in under 15 seconds, no network access
-required.
+Expected output: `69 passed`, no network access required.
 
 You can also smoke-test the running server directly:
 
@@ -172,7 +218,10 @@ curl -X POST http://localhost:8000/api/scans/sync \
 | `pip install` fails on a specific package | Ensure you're using Python 3.11+; some pinned versions require it. Re-run `./scripts/setup.sh`. |
 | Port 8000 already in use | `CLOUDGUARD_API_PORT=8001 ./scripts/run.sh`, or stop the other process. |
 | Dashboard loads but "Run scan" hangs | Check `curl http://localhost:8000/api/health`; if that fails, the API isn't running — check terminal output / `docker compose logs`. |
-| Scan runs but shows 0 findings unexpectedly | You may have valid AWS credentials pointing at an already well-configured account — check the `mode` field in the scan result (`live` vs `demo`) to confirm which one ran. |
+| Scan runs but shows 0 findings unexpectedly | You may have valid credentials pointing at an already well-configured account — check the `mode` field in the scan result (`live` vs `demo` vs `mixed`) to confirm which one ran. |
+| Azure scan stays in demo mode after `az login` | Check `az account show` reports the subscription you expect, and that the signed-in identity has at least Reader access to it. CloudGuard logs the reason at startup — look for "No live Azure credentials available". |
+| `azure-identity` errors about interactive login | CloudGuard excludes the interactive-browser credential by design — use `az login` or service-principal env vars instead. |
+| API errors mentioning a missing `provider` column | Your `cloudguard.db` predates the Azure update and the automatic migration did not run. Stop the server, delete `backend/cloudguard.db` (scan history is lost), and restart — the database is recreated with the new schema. |
 | `ModuleNotFoundError` when running the CLI directly | Activate the virtualenv first (`source .venv/bin/activate`), or run via `scripts/setup.sh` which installs everything into it. |
 | SQLite "database is locked" under heavy concurrent use | Expected for SQLite under concurrent writes; for production/multi-user deployments, set `CLOUDGUARD_DATABASE_URL` to a PostgreSQL connection string. |
 | Docker build fails to reach PyPI | Check your network/proxy settings; corporate proxies may need `--build-arg HTTP_PROXY=...` added to the Dockerfile. |

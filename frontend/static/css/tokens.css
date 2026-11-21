@@ -1,38 +1,42 @@
 /* ==========================================================================
    CloudGuard Design Tokens
-   Direction: security operations command-center — a deep, blue-black
-   console with a signature radial "posture gauge" (a scan-sweep dial,
-   not a generic progress ring), calibrated severity colors, monospace
-   for anything that is literally data (ARNs, ports, IDs), and a
-   geometric display face for structure.
+
+   Direction: simple, pleasant, normal light colors — a warm off-white
+   page, white panels, dark readable text, and one calm blue accent.
+   The signature radial "posture gauge" (a scan-sweep dial, not a generic
+   progress ring) is kept; severity colors are softened but distinct,
+   monospace is used for anything that is literally data (ARNs, ports,
+   IDs), and a geometric display face provides structure.
+
+   This palette is shared with the project's other tools (PhishSim,
+   SecureShare) so the portfolio reads as one family.
    ========================================================================== */
 :root {
-  /* Color: 4-6 named hex values, deliberately NOT the AI-default cream/serif
-     or pure-black/neon-green combos. */
-  --bg-base: #0a1420;
-  --bg-panel: #101d2e;
-  --bg-panel-raised: #16263b;
-  --bg-inset: #0d1826;
-  --border: #223349;
-  --border-soft: #1a2942;
-  --text-primary: #e8eef6;
-  --text-secondary: #93a8c2;
-  --text-muted: #5d7290;
-  --accent: #34c9c2;
-  --accent-dim: #1f7c78;
-  --accent-glow: rgba(52, 201, 194, 0.18);
+  /* Color: warm off-white page, white surfaces, calm blue accent. */
+  --bg-base: #f7f7f4;
+  --bg-panel: #ffffff;
+  --bg-panel-raised: #f5f5f2;
+  --bg-inset: #f1f1ed;
+  --border: #e7e4de;
+  --border-soft: #e7e4de;
+  --text-primary: #22262b;
+  --text-secondary: #667085;
+  --text-muted: #98a2b3;
+  --accent: #2563eb;
+  --accent-dim: #1d4ed8;
+  --accent-glow: rgba(37, 99, 235, 0.08);
 
-  --sev-critical: #ef4444;
-  --sev-high: #f2760c;
-  --sev-medium: #e0ab13;
-  --sev-low: #3b82f6;
-  --sev-info: #64748b;
+  --sev-critical: #b91c1c;
+  --sev-high: #b45309;
+  --sev-medium: #d9a441;
+  --sev-low: #2563eb;
+  --sev-info: #667085;
 
-  --grade-a: #22c55e;
-  --grade-b: #84cc16;
-  --grade-c: #e0ab13;
-  --grade-d: #f2760c;
-  --grade-f: #ef4444;
+  --grade-a: #15803d;
+  --grade-b: #4d7c0f;
+  --grade-c: #d9a441;
+  --grade-d: #b45309;
+  --grade-f: #b91c1c;
 
   --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
   --font-body: 'Inter', 'Segoe UI', sans-serif;
@@ -41,7 +45,7 @@
   --radius-sm: 3px;
   --radius-md: 6px;
   --radius-lg: 10px;
-  --shadow-panel: 0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-panel: 0 1px 3px rgba(34, 38, 43, 0.06), 0 4px 12px rgba(34, 38, 43, 0.04);
 }
 
 * { box-sizing: border-box; }
@@ -54,14 +58,6 @@ html, body {
   font-family: var(--font-body);
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Faint scan-line texture across the whole app — subtle, not decorative
-   clutter; reinforces the "scanning" subject without moving. */
-body {
-  background-image:
-    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(52,201,194,0.06), transparent 60%),
-    repeating-linear-gradient(180deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
 }
 
 a { color: var(--accent); text-decoration: none; }

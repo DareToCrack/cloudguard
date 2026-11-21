@@ -40,6 +40,15 @@ class ResourceType(str, Enum):
     VPC = "vpc"
     LAMBDA_FUNCTION = "lambda_function"
     ACCOUNT = "account"
+    # Azure resource types
+    AZURE_STORAGE_ACCOUNT = "azure_storage_account"
+    AZURE_NSG = "azure_nsg"
+    AZURE_ROLE_ASSIGNMENT = "azure_role_assignment"
+    AZURE_ROLE_DEFINITION = "azure_role_definition"
+    AZURE_SQL_SERVER = "azure_sql_server"
+    AZURE_KEY_VAULT = "azure_key_vault"
+    AZURE_MANAGED_DISK = "azure_managed_disk"
+    AZURE_SUBSCRIPTION = "azure_subscription"
 
 
 class FindingStatus(str, Enum):
@@ -58,6 +67,6 @@ class ScanStatus(str, Enum):
 
 class CloudProvider(str, Enum):
     AWS = "aws"
-    # Placeholders for future provider modules (see docs/FUTURE_WORK.md).
     AZURE = "azure"
+    # Placeholder for a future provider module (see docs/FUTURE_WORK.md).
     GCP = "gcp"
